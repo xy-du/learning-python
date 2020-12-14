@@ -28,12 +28,11 @@ class FrenchCard:
         """response to [] operator"""
         return self._card[item]
 
-
 # beer_card = Card('7', 'diamonds')
 # print(beer_card)
 
-deck = FrenchCard()
-print(len(deck))
+# deck = FrenchCard()
+# print(len(deck))
 
 # print(deck[0])
 # print(deck[-1])
