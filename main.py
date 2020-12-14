@@ -1,23 +1,12 @@
-"""this is a docstring"""
+# high-order functions: a function that takes a a function as a argument or returns a function as the result.
 
-def factorial(n):
-    """return n!"""
-    return 1 if n < 2 else factorial(n - 1) * n
-
-print(factorial(42))
-print(factorial.__doc__)
-print(type(factorial))
-
-fact=factorial
-print(fact(5))
-print(map(fact,range(0,11)))
-print(list(map(fact,range(0,11))))
+def reverse(word):
+    return word[::-1]
 
 
-# import test
-#
-# print('here is main.py. __name__ = ',__name__)
-# if(__name__=='__main__'):
-#     print('test.py is running directly')
-# else:
-#     print('test.py is running by others')
+print(reverse('abcde'))
+
+fruits = ['strawberry', 'fig', 'apple', 'cherry', 'raspberry', 'banana']
+# words in fruits list are not changed, only the reversed spelling is used
+s_list = sorted(fruits, key=reverse)
+print(s_list)
