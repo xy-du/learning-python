@@ -35,3 +35,15 @@ for item in line_items:
 #  a[1:...] can be a shortcut for a[1,:,:,:] (one comma, one dimension)
 
 # no Ellipsis or mutipledimensional indexes and slicing
+
+
+# assigning to slice
+l = list(range(0, 11))
+print(l)
+del l[8:]
+print(l)
+l[2:5] = [12, 13, 14]
+print(l)
+# l[1:3]=100 can be done
+l[1:3] = [100]  # 1 and 12 is replaced by 100
+print(l)
