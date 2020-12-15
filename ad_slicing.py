@@ -18,7 +18,20 @@ DISCRIPTION = slice(6, 40)
 UNIT_PRICE = slice(40, 52)
 QUANTITY = slice(52, 55)
 ITEM_TOTAL = slice(55, None)
+# ITEM_TOTAL = slice(55, ...)
 line_items = invoice.split('\n')[2:]
 
 for item in line_items:
     print(item[UNIT_PRICE], item[DISCRIPTION])
+
+# multidimensional slicing and Ellipsis.(since built-in sequence types in python are one-dimension, they only support one
+# index or slice, not a tuple of them)
+# a[i, j]  # used in numpy.ndarray to get a item. python call a.__getitem__((i,j))
+# a[m:n, k:l]  # two-dimensional, in numpy
+
+# ... is an alias to Ellipsis Object, which is the single instance for ellipsis class. and as an object, so it can be used
+# to pass as an argument to function and a part of slice specification.
+# function(...,arg1,arg2) (use as an argument)
+#  a[1:...] can be a shortcut for a[1,:,:,:] (one comma, one dimension)
+
+# no Ellipsis or mutipledimensional indexes and slicing
