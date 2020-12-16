@@ -32,5 +32,13 @@ print(codes)
 # in python2 the x used in listcomps will leak, i.e. it will affect the value surrounding it.
 # but this is fixed in python3, where variables in listcomps will just be a local var
 x = 'a'
-lx = [x for x in '1233']
+lx = [x for x in 'ABC']
 print(x)
+print(lx)
+
+# same list can be obtained with listcomps without the contortion of the lambda, map, filter
+symbols = '$¢£¥€¤'
+beyond_ascii = [ord(s) for s in symbols if ord(s) > 127]
+print(beyond_ascii)
+beyond_ascii = list(filter(lambda x: x > 127, map(ord, symbols)))
+print(beyond_ascii)
