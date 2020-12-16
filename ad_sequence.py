@@ -42,3 +42,16 @@ beyond_ascii = [ord(s) for s in symbols if ord(s) > 127]
 print(beyond_ascii)
 beyond_ascii = list(filter(lambda x: x > 127, map(ord, symbols)))
 print(beyond_ascii)
+
+# cartesien product
+# imagine a kind of T-shirt has two size and three color
+# pay attention to the order of the var appearing in the listcomps
+colors = ['black', 'white']
+sizes = ['S', 'M', 'L']
+shirt_ls = [(color, size)
+            for color in colors
+            for size in sizes]
+print(shirt_ls)
+for color in colors:
+    for size in sizes:
+        print((color, size))
