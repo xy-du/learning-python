@@ -55,3 +55,22 @@ print(shirt_ls)
 for color in colors:
     for size in sizes:
         print((color, size))
+
+# generator expression: it yields items one by one. So no whole list in the memory
+
+# initial a tuple and array using genexps. listcomp use brackets but genexps use parentheses
+symbols = '$¢£¥€¤'
+tp = tuple(ord(s) for s in symbols)  # if it's only one args, no parentheses needed
+print(tp)
+import array
+
+arr = array.array('I', (ord(s) for s in symbols))  # if it's not the only args, parentheses is mandatory
+print(arr)
+
+colors = ['black', 'white']
+sizes = ['S', 'M', 'L']
+# a whole list of t-shirts is never produced
+for tshirt in ('%s %s' % (color, size)
+               for color in colors
+               for size in sizes):
+    print(tshirt)
