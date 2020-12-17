@@ -53,3 +53,27 @@ print('{:15}|{:^9}|{:^9}'.format('', 'lat', 'long'))
 fmt = '{:15}|{:^9.4f}|{:^9.4f}'  # here : means space control 9 means width and .4 means precision
 for name, cc, pop, (latitude, longitude) in metro_areas:
     print(fmt.format(name, latitude, longitude))
+
+# as a record we want field name, that when namedtuple comes in.
+# it can be seen as a class
+# instance of namedtuple use less memory because they do not store attributes in per-instance __dict__
+# so the instance will just use the same memory as a normal tuple, and the field names are stored in the Class.
+from collections import namedtuple
+
+# given a class name and a list of field names, which can be a iterable of string or as a single space-delimiter string
+City = namedtuple('City', 'name country population cordinates')
+tokyo = City('tokyo', 'JP', 12323, (12.2321212, 12.3523245))
+print(tokyo)
+print(tokyo.name)  # you can access value by atrribute name
+print(tokyo.country)
+print(tokyo.cordinates)
+print(tokyo[0], tokyo[1])  # you can access value bu index
+
+# class atrribute _field     class method _make(iterable)   _asdict()  instance method
+print(City._fields)  # _fields is a tuple with class atrribute names in it
+delhi_data = ('delhi', 'DH', '321232', (12.2435423, 34.321335542))
+delhi = City._make(
+    delhi_data)  # _make can instantiate a namedtupel with a an iterable. NOTE: City(*delhi_data) can do the same
+print(delhi._asdict())
+for key, value in delhi._asdict().items():
+    print(f'{key} : {value}')
