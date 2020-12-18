@@ -124,3 +124,18 @@ except TypeError as e:
     print('there is an error: ' + str(e))
     pass
 print(t)
+
+# list.sort method sort a list in place, and return None to indicate this.(Return None to show that the original
+# list is not changed is a python convention). drawback is that you will not be able to use fluent interface style
+# both list.sort and sorted function have two optional, keyword-only arguments, 'key' and 'reversed'
+fruits = ['grape', 'raspberry', 'apple', 'banana']
+print(fruits)
+print(sorted(fruits))
+print(sorted(fruits, key=len, reverse=True))
+print(sorted(fruits, key=min))
+# list sort happened in place.change the original data.
+fruits.sort()
+print(fruits.sort())  # this one will just return None
+print(fruits)
+fruits.sort(key=len, reverse=True)
+print(fruits)
