@@ -74,3 +74,53 @@ for tshirt in ('%s %s' % (color, size)
                for color in colors
                for size in sizes):
     print(tshirt)
+
+# * and + create new object, and never change their operands
+l = [1, 2, 3]
+print(l * 2)
+print(5 * 'abcd')
+
+# using []*n, whatever in that [], just duplicate them n times
+# it's not like, duplicate [] as a whole n times and then put another[] around it
+l1 = ['_']
+print(l1 * 3)
+
+l2 = ['_', '_', '_']
+l = l2 * 3
+print(l)
+l[0] = 'X'
+print(l)
+
+# when [] contains mutable items, like here a list. The reference get duplicate three times, so change one item in one
+# list, all the items in the same position in other list alse changed since the refer to the same object.
+l3 = [['_', '_', '_']]
+l = l3 * 3
+print(l)
+l[0][1] = 'X'
+print(l)
+# right way to do it, we need to avoid using * with [] that contains mutable items.
+
+# augmented assignment with sequence
+# using += as example, but *= is the same
+# a+=b
+# for mutable sequence, __iadd__ will make a change in place. But if a doesn't implement __iadd__, s+= will just
+# be like a=a+b, valued on the right evaluated first, produce a new object, then it's assigned to a.
+# l is a mutable list
+l = [1, 2, 3]
+print(id(l))
+l *= 2
+print(id(l))
+# l is an immutable tuple
+l = (1, 2, 3)
+print(id(l))
+l *= 2
+print(id(l))
+
+# do the try-catch block so that the program will continue, so print(t) will show us the 'corner case'
+t = (1, 2, [3, 4])
+try:
+    t[2] += [7, 9]
+except TypeError as e:
+    print('there is an error: ' + str(e))
+    pass
+print(t)
