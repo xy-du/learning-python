@@ -139,3 +139,44 @@ print(fruits.sort())  # this one will just return None
 print(fruits)
 fruits.sort(key=len, reverse=True)
 print(fruits)
+
+# manage ordered sequence with bisect
+# input(prompt) can accept user's input
+# function.__name__   get the name of the function
+# {digit:format_specification} digit is the position of the arguments following
+# 'separator'.join(iterable)  concatenate all the items with the separator between each one of them
+# bisect=bisect_right and bisect_left is only different when the needle is the same with the element they found,
+# former will return the index behind it and the latter will return the index right on it (which will make item
+# insert just before it if the index is used for insert)
+import bisect
+
+HAYSTACK = [1, 4, 5, 6, 8, 12, 15, 20, 21, 23, 23, 26, 29, 30]
+NEEDLES = [0, 1, 2, 5, 8, 10, 22, 23, 29, 30, 31]
+
+# msg = input('choose the binary search method:')
+# if int(msg) == 0:
+#     bisect_fn = bisect.bisect
+# else:
+#     bisect_fn = bisect.bisect_left
+
+bisect_fn = bisect.bisect
+
+print('use method : ', bisect_fn.__name__)
+fmt = '{0:2d} @ {1:2d}     {2}{0:2d}'
+print('haystack--> ', ' '.join('%2d' % n for n in HAYSTACK))
+for needle in reversed(NEEDLES):
+    index = bisect_fn(HAYSTACK, needle)
+    offset = index * '  |'
+    print(fmt.format(needle, index, offset))
+
+
+# a interesting application is using bisect to perform table look up
+
+
+def grade(score, breakpoints=[60, 70, 80, 90], grades='FDCBA'):
+    i = bisect.bisect(breakpoints, score)
+    return grades[i]
+
+
+ls = [grade(score) for score in [33, 99, 77, 70, 89, 90, 100]]
+print(ls)

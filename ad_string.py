@@ -27,6 +27,7 @@ print("this is dick's house")
 
 # use % to do the string formation <format_string> % <values>
 # if there are multiple values, they have to be enclosed in a tuple
+# https://realpython.com/python-formatted-output/
 line = '%d %s cost $%.2f' % (6, 'bananas', 1.74)
 print(line)
 # if there is only one value, it doesn't have to be enclosed
