@@ -202,14 +202,27 @@ import array
 # 'd' stands for double float, here you set its type
 # the tofile and fromfile function is much more faster than read or write number from txt file, which involves in
 # parsing every line with the float() built-in function
-f_arr1 = array.array('d', (random.random() for i in range(10 ** 7)))
-print(f_arr1[-1])
-fp = open('floats.bin', 'wb')  # wb : write, binary
-f_arr1.tofile(fp)
-fp.close()
-f_arr2 = array.array('d')
-fp = open('floats.bin', 'rb')  # rb : read, binary
-f_arr2.fromfile(fp, 10 ** 7)
-fp.close()
-print(f_arr2[-1])
-print(f_arr2[-1] == f_arr1[-1])
+# ========here i comment it since it takes a little longer to run======
+# f_arr1 = array.array('d', (random.random() for i in range(10 ** 7)))
+# print(f_arr1[-1])
+# fp = open('floats.bin', 'wb')  # wb : write, binary
+# f_arr1.tofile(fp)
+# fp.close()
+# f_arr2 = array.array('d')
+# fp = open('floats.bin', 'rb')  # rb : read, binary
+# f_arr2.fromfile(fp, 10 ** 7)
+# fp.close()
+# print(f_arr2[-1])
+# print(f_arr2[-1] == f_arr1[-1])
+
+numbers = array.array('h', [-2, -1, 0, 1, 2])
+memov = memoryview(numbers)
+print("itemsize", memov.itemsize)  # size of every item in the array
+print(len(memov))
+# print(memov.format)
+memov_B = memov.cast('B')
+print('itemsize', memov_B.itemsize)
+print(len(memov_B))  # len(view) is equal to the length of tolist
+print(memov_B.tolist())
+memov_B[5] = 4  # a 4 in the most significant byte of 2-byte unsigned integer 0000 0010 0000 0000
+print(numbers)
