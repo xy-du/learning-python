@@ -226,3 +226,6 @@ print(len(memov_B))  # len(view) is equal to the length of tolist
 print(memov_B.tolist())
 memov_B[5] = 4  # a 4 in the most significant byte of 2-byte unsigned integer 0000 0010 0000 0000
 print(numbers)
+
+# numpy and scipy:
+# deserve a entire book, this study process is highlighting what is already in the python standard library
