@@ -180,3 +180,36 @@ def grade(score, breakpoints=[60, 70, 80, 90], grades='FDCBA'):
 
 ls = [grade(score) for score in [33, 99, 77, 70, 89, 90, 100]]
 print(ls)
+
+import random
+
+ls_size = 7
+random.seed(1729)
+my_ls = []
+for i in range(ls_size):
+    new_item = random.randrange(ls_size * 2)
+    bisect.insort(my_ls, new_item)
+    print('%2d-->' % new_item, my_ls)
+
+# list is very handy, but do not overuse it, under certain circumstances, other choices are much more efficient
+# if you want to store 10 million float number, use array would be wise
+# array will not store the full-fledged float object, but only the packed bytes representing their machine value
+# just like in C language
+# this will save memory for large sequence
+# array will not let you put in any number that does not match its type (yeah, array has its type)
+import array
+
+# 'd' stands for double float, here you set its type
+# the tofile and fromfile function is much more faster than read or write number from txt file, which involves in
+# parsing every line with the float() built-in function
+f_arr1 = array.array('d', (random.random() for i in range(10 ** 7)))
+print(f_arr1[-1])
+fp = open('floats.bin', 'wb')  # wb : write, binary
+f_arr1.tofile(fp)
+fp.close()
+f_arr2 = array.array('d')
+fp = open('floats.bin', 'rb')  # rb : read, binary
+f_arr2.fromfile(fp, 10 ** 7)
+fp.close()
+print(f_arr2[-1])
+print(f_arr2[-1] == f_arr1[-1])
