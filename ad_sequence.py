@@ -229,3 +229,27 @@ print(numbers)
 
 # numpy and scipy:
 # deserve a entire book, this study process is highlighting what is already in the python standard library
+
+
+# pronounced 'deck', short for double-ended queue
+# support thread safe, memory efficient double-ended pop and append with O(1) performance
+# deque is safe to use in multithreaded application without the need for using locks
+from collections import deque
+
+dq = deque(range(10), maxlen=10)
+print(dq)
+dq.rotate(3)
+print(dq)
+dq.rotate(-4)
+print(dq)
+dq.appendleft(-1)
+print(dq)
+dq.extend([11, 12, 13])
+print(dq)
+dq.extendleft([10, 20, 30, 40])
+print(dq)
+
+# package: queue    Queue,LifoQueue,PriorityQueue.   thread safe, when full, no discard, just block for empty room
+# package: multiprocessing    interprocess communication, multiprocessing.JoinableQueue for easier task management
+# package: asyncio   Queue,LifoQueue,PriorityQueue,JoinableQueue, manage task in asynchronous programming
+# package: heapq,  heaqp queue algorithm/ priority queue algorithm
