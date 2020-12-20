@@ -35,3 +35,24 @@ e = dict({'one': 1, 'two': 2, 'three': 3})
 b = dict([('one', 1), ('two', 2), ('three', 3)])
 c = dict(zip(['one', 'two', 'three'], [1, 2, 3]))
 print(a == b == c == d == e)
+
+DIAL_CODES = [
+    (86, 'China'),
+    (91, 'India'),
+    (1, 'United States'),
+    (62, 'Indonesia'),
+    (55, 'Brazil'),
+    (92, 'Pakistan'),
+    (880, 'Bangladesh'),
+    (234, 'Nigeria'),
+    (7, 'Russia'),
+    (81, 'Japan'),
+]
+
+country_dict = {country: code for code, country in DIAL_CODES}
+print(country_dict)
+country_dict_filtered = {country: code for code, country in DIAL_CODES if code < 66}
+print(country_dict_filtered)
+# note that this one is coming from the items()
+country_dict_f = {country: code for country, code in country_dict.items() if code < 66}
+print(country_dict_filtered)
