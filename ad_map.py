@@ -56,3 +56,34 @@ print(country_dict_filtered)
 # note that this one is coming from the items()
 country_dict_f = {country: code for country, code in country_dict.items() if code < 66}
 print(country_dict_filtered)
+
+# accepts either another dictionary object or an iterable of key/value pairs (as tuples or other iterables of length
+# two).here if you only pass (('Japan', 111)) in without the comma, what you actually pass in is just ('japan',111)
+# iterable, yes, but the element will be 'Japan' and 111, which apparently will not work
+# instead, you should pass in like below, then ('Japna',111) in (('Japan', 111),) will be seen as the first element.
+country_dict.update((('Japan', 111),))
+print(country_dict)
+
+# handle missing key with setdefault
+# as we can see, the logic of three line can be expressed by single line with setdefault key
+# compile() will return a match object of regular expression
+# enumerate(iterable, startindex) will return each item in iterable with index starting from 1, in the form(item,index)
+# finditer() will return every single match in the form of match object, group() can get the actual string content
+# setdefault(key,val) if find the value of the key, then return. if not, add the key:val pair into map and return it.
+import re
+
+pattern = re.compile('\w+')
+record = {}
+fp = open('zen.txt', encoding='utf-8')
+for line_no, line in enumerate(fp, 1):
+    for match in pattern.finditer(line):
+        word = match.group()
+        column_no = match.start() + 1
+        location = (line_no, column_no)
+        # word_rec = record.get(word, [])
+        # word_rec.append(location)
+        # record[word] = word_rec
+        record.setdefault(word, []).append(location)
+fp.close()
+for w in sorted(record, key=str.upper):
+    print(w, record[w])
