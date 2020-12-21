@@ -90,5 +90,45 @@ for line_no, line in enumerate(fp, 1):
         # record.setdefault(word, []).append(location)
         record[word].append(location)
 fp.close()
-for w in sorted(record, key=str.upper):
-    print(w, record[w])
+# comment it since the output is too much
+# for w in sorted(record, key=str.upper):
+#     print(w, record[w])
+
+# a little case to show that the keys in map do not have to be the same type
+m = {'key1': 1, 22: 2}
+print(m)
+
+
+# about __missing__ method
+# __missing method is not defined in the base dict class, but dict is aware of it. if you subclass dict and provide
+# this method, the standard __getitem__ will call it whenever a key is not founded
+# this method will only be used by __getitem__(map[key]), will not be used by __contain__(in operator) and get(key)
+
+# implement a dict that the key type mixing str and int type but when you use it, you can use the way you like and the
+# int-to-str operation will performed automatically. i.e. if value not found in int form key it will be convert to
+# string and try again
+
+class StrKeyDict(dict):
+    def __missing__(self, key):
+        if isinstance(key, str):  # not with this test, when str(key) is not in dict, infinite recursion happen
+            raise KeyError(key)
+        return self[str(key)]
+
+    def get(self, key, default):
+        try:
+            return self[key]  # user self[] so the __missing__ will be invoked when self[key] is not there
+        except KeyError:
+            return default
+
+    # item in self.keys() to make sure when int key has it's value, the logic is right.
+    # after all, we want this class to be 'friendlier' but not limit the key type to just str
+    def __contains__(self, item):
+        return item in self.keys() or str(item) in self.keys()
+
+
+d = StrKeyDict([('2', 'two'), ('4', 'four')])
+
+print(d[2])
+print(d['2'])
+# print(d[3]) # error
+# print(d['3']) # error
