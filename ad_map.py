@@ -132,3 +132,11 @@ print(d[2])
 print(d['2'])
 # print(d[3]) # error
 # print(d['3']) # error
+
+# variations of dict
+# mapping types in the standard library module collections
+# defaultdict   see before
+# collections.OrderedDict   as you can guess.  popitem()   popitem(last=True)
+# collections.ChainMap    holds a list of mappings that can be searched as one
+# collections.Counter   count each item happened how many times in a iterable or mapping
+# collections.UserDict   pure python implementation of a mapping just like the dict but it's designed to be subclassed
