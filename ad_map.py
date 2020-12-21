@@ -178,3 +178,17 @@ print(d[2])
 print(d['2'])
 # print(d[3])  # error
 # print(d['3'])  # error
+
+# immutable mappings
+# all mappings types provided by the standard library are all mutable
+# sometimes you do need immutable mappings
+
+# since python 3.3, types module provide MappingProxyType which, given a mapping, return a MappingProxy instance that
+# is a read-only but dynamic view of the original mapping
+from types import MappingProxyType
+
+m = {1: 'one', 2: 'two'}
+mt = MappingProxyType(m)
+print(mt)
+m.update({3: 'three'})
+print(mt)
