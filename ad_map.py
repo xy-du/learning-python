@@ -108,7 +108,7 @@ print(m)
 # int-to-str operation will performed automatically. i.e. if value not found in int form key it will be convert to
 # string and try again
 
-class StrKeyDict(dict):
+class StrKeyDict0(dict):
     def __missing__(self, key):
         if isinstance(key, str):  # not with this test, when str(key) is not in dict, infinite recursion happen
             raise KeyError(key)
@@ -126,7 +126,7 @@ class StrKeyDict(dict):
         return item in self.keys() or str(item) in self.keys()
 
 
-d = StrKeyDict([('2', 'two'), ('4', 'four')])
+d = StrKeyDict0([('2', 'two'), ('4', 'four')])
 
 print(d[2])
 print(d['2'])
@@ -140,3 +140,41 @@ print(d['2'])
 # collections.ChainMap    holds a list of mappings that can be searched as one
 # collections.Counter   count each item happened how many times in a iterable or mapping
 # collections.UserDict   pure python implementation of a mapping just like the dict but it's designed to be subclassed
+
+
+# subclass UserDict
+# it's always easier to extend UserDict than dict to create a new mapping
+# UserDict does not inherit from dict but instead using it as a internal instance: data. this avoid recursion in
+# __setitem__ (m[key]=val in __setitem__ will call __setitem__ again). and simplifies the coding of __contains__
+#
+# rewrite the preview StrKeyDict0 using UserDict
+# since UserDict subclass MutableMapping which subcalss mapping, except the method that was implemented below, it was
+# the method from UserDict and MutableMapping and Mapping that make StrKeyDict an full-fledged mapping. And methods that
+# worth noting is that:
+# MutableMapping.update   __init__ use it to make mapping instance from other mapping instance and it actually use
+# self[key]=value to do the update, which ends up use __setitem__ that we implement
+# Mapping.get   from python source code, we can seen that this method use __setitem__
+
+from collections import UserDict
+
+
+class StrKeyDict(UserDict):
+    def __missing__(self, key):
+        if isinstance(key, str):
+            return KeyError(key)
+        else:
+            return self.data[str[key]]
+
+    def __setitem__(self, key, value):
+        self.data[key] = value
+
+    def __contains__(self, item):
+        return item in self.data
+
+
+d = StrKeyDict0([('2', 'two'), ('4', 'four')])
+
+print(d[2])
+print(d['2'])
+# print(d[3])  # error
+# print(d['3'])  # error
