@@ -70,10 +70,14 @@ print(country_dict)
 # enumerate(iterable, startindex) will return each item in iterable with index starting from 1, in the form(item,index)
 # finditer() will return every single match in the form of match object, group() can get the actual string content
 # setdefault(key,val) if find the value of the key, then return. if not, add the key:val pair into map and return it.
+# use defaultdict(factory) instead of flat dict. __missing__ in it, only called by __getitem__ (map[key]), not other
+# method(map.get(method)), the factory is holding in an instance attribute called default_factory
 import re
+import collections
 
 pattern = re.compile('\w+')
-record = {}
+# record = {}
+record = collections.defaultdict(list)
 fp = open('zen.txt', encoding='utf-8')
 for line_no, line in enumerate(fp, 1):
     for match in pattern.finditer(line):
@@ -83,7 +87,8 @@ for line_no, line in enumerate(fp, 1):
         # word_rec = record.get(word, [])
         # word_rec.append(location)
         # record[word] = word_rec
-        record.setdefault(word, []).append(location)
+        # record.setdefault(word, []).append(location)
+        record[word].append(location)
 fp.close()
 for w in sorted(record, key=str.upper):
     print(w, record[w])
