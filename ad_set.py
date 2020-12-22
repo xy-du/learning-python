@@ -46,3 +46,11 @@ print(dis('set([1])'))
 # for frozenset, it has to be created by calling the constructor
 fs = frozenset(range(10))
 print(fs)  # not the output, and it's not in the {...} form!!!
+
+# set comprehension/ setcomps
+# chr() return the character based on the unicode int passed in
+# name(char, [default]) return the name assigned to the character as a string
+from unicodedata import name
+
+s = {chr(i) for i in range(32, 256) if 'SIGN' in name(chr(i), '')}
+print(s)
