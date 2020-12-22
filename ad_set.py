@@ -28,3 +28,21 @@ nd = [11, 2, 3]
 hs = [2, 3, 4, 5, 6, 7, 8, 9]
 print(set(nd) & set(hs))
 print(set(nd).intersection(hs))
+
+# set literals
+# {1} {1,2} are ok, but no empty {} is allow since it will build a dict. for empty set you have to use the constructor
+s = {1}
+print(s)
+s.pop()  # return a arbitrary element in the set
+print(s)
+print(type(s))
+
+# {...} is faster than calling the constructor
+from dis import dis
+
+print(dis('{1}'))
+print(dis('set([1])'))
+
+# for frozenset, it has to be created by calling the constructor
+fs = frozenset(range(10))
+print(fs)  # not the output, and it's not in the {...} form!!!
