@@ -201,4 +201,26 @@ print(name(eszett))
 eszett_cf = eszett.casefold()
 # print(name(eszett_cf)) # this will get a error
 print(eszett, eszett_cf)
-print(eszett == eszett_cf)
+print(micro.casefold() == micro_cf.casefold())
+
+micro = '\u00b5'
+micro2 = '\u03bc'
+print(micro, micro2)
+print(micro == micro2)
+print(normalize('NFC', micro) == normalize('NFC', micro2))  # for compatible character, NFC can not do the work
+print(normalize('NFKC', micro) == normalize('NFKC', micro2))  # NFKC is the choice for this situation
+print(micro.casefold(), micro2.casefold())
+print(hex(ord(micro.casefold())), hex(ord(micro2.casefold())))
+print(micro.casefold() == micro2.casefold())  # seems casefold() can do it too
+
+s1 = 'Codé'
+s2 = 'code\u0301'
+print(s1.casefold(), s2.casefold())
+print(len(s1.casefold()), len(s2.casefold()))
+# return False. so casefold is for single character,
+# for composition and decomposition, NFC/NFD should be used.
+print(s1.casefold() == s2.casefold())
+# return False, so NFC can not resolve the lower or upper case issues
+print(normalize('NFC', s1) == normalize('NFC', s2))
+# All in All, maybe sometimes, it's necessary to combine NFC and casefold() to do the work
+print(normalize('NFC', s1.casefold()) == normalize('NFC', s2.casefold()))
