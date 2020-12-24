@@ -184,3 +184,20 @@ micro_kc = normalize('NFKC', micro)
 print(micro, micro_kc)
 print(hex(ord(micro)), hex(ord(micro_kc)))
 print(name(micro), name(micro_kc))
+
+print('+++++++++++++++++++++++++++++++++++++')
+# Case Folding
+# case folding is essentially converting all text to lowercase, with some exceptions
+# str.casefold() new in python3.3
+# python 4.4: there 116 character whose case folding form is difference lowcase() method return.
+# here take Latin1 as a example, all the characters in latin1 returns
+micro = 'µ'
+print(name(micro))
+micro_cf = micro.casefold()
+print(name(micro_cf))
+print(micro, micro_cf)
+eszett = 'ß'
+print(name(eszett))
+eszett_cf = eszett.casefold()
+# print(name(eszett_cf)) # this will get a error
+print(eszett, eszett_cf)
