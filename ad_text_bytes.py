@@ -122,3 +122,65 @@ sys.stdout.isatty()
 for expression in expressions.split():
     value = eval(expression)
     print(expression.rjust(30), '->', repr(value))
+
+print('+++++++++++++++++++++++++++++++++++++')
+# normalize unicode for 'normal' comparisons
+# combining acute accent:
+#   in unicode : é and \u0301 are 'canonical equivalent'
+#   in python:  they are difference code point sequence, therefore is not equivalent
+s1 = 'codé'
+s2 = 'code\u0301'
+print(s1, s2)
+# print(bytes(s1, encoding='utf8'), bytes(s2, encoding='utf8'))
+print(len(s1), len(s2))
+print(s1 == s2)
+# so how to compare them?
+# Unicode Normalization!
+# NFC: normalization form composition    produce shortest equivalent string
+# NFD: normalization form decomposition   expandes composed character into base characters
+from unicodedata import normalize
+
+print(normalize('NFC', s1), normalize('NFC', s2))
+print(len(normalize('NFC', s1)), len(normalize('NFC', s2)))
+print(normalize('NFD', s1), normalize('NFD', s2))
+print(len(normalize('NFD', s1)), len(normalize('NFD', s2)))
+print(normalize('NFC', s1) == normalize('NFC', s2))
+print(normalize('NFD', s1) == normalize('NFD', s2))
+
+print('+++++++++++++++++++++++++++++++++++++')
+# NFC may change the code for some characters, even they are visually same.
+# so it's essential to normalize to avoid surprise
+ohm = '\u2126'
+print(ohm)
+print(hex(ord(ohm)))
+print(bytes(ohm, encoding='utf8'))
+ohm_c = normalize('NFC', ohm)
+print(ohm_c)
+print(hex(ord(ohm_c)))
+print(bytes(ohm_c, encoding='utf8'))
+print(ohm == ohm_c)
+print(normalize('NFC', ohm) == normalize('NFC', ohm_c))
+
+print('+++++++++++++++++++++++++++++++++++++')
+# some character may appear more than once in unicode for 'compatibility' reason, these character is considered
+# 'compatibility character'
+# e.g., 'μ' (U+00B5) (U+03BC)
+# NFKD and NFKC
+# K stands for 'compatibility'
+# using this normalization form, compatibility character is replaced by 'compatibility decomposition' of one or more
+# characters that are considered a 'preferred'  representation
+# in the following case, 4² lost it's meaning in the transformation, so you have to be very careful when use NFKC,NFKD
+# good places to use them is searching and indexing
+half = '½'
+print(normalize('NFKC', half))
+print(normalize('NFKD', half))
+four_square = '4²'
+print(normalize('NFKC', four_square))
+
+from unicodedata import name
+
+micro = 'µ'
+micro_kc = normalize('NFKC', micro)
+print(micro, micro_kc)
+print(hex(ord(micro)), hex(ord(micro_kc)))
+print(name(micro), name(micro_kc))
