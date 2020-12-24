@@ -86,3 +86,39 @@ print(octets.decode('utf8', errors='replace'))  # replace by � (Official unico
 # since UTF8 if bytes oriented, so not BOM is not needed, since no matter big or little-indian is the machine
 # the sequence of the bytes will be the same. see the video below to know how utf8 works
 # https://www.youtube.com/watch?v=tbdym9ZtepQ
+
+
+print('+++++++++++++++++++++++++++++++++++++')
+# the encoding parameter in two open below can be omitted, but that is not the best practice from the encode/decode
+# perspective, since it will only work fine because I am using OSX which utf8 is the default encoding format
+f1 = open('text_byte.txt', 'w', encoding='utf-8')
+f1.write('café')
+f1.close()
+f2 = open('text_byte.txt', encoding='utf-8')
+print(f2.read())
+
+print('+++++++++++++++++++++++++++++++++++++')
+# if you run the flowing digest on windows, you will get different output since windows use different encoding under
+# different circumstances, which is painful. BUT, you can always ease lots of pains when you are explicit about the
+# encodings in you programs
+import sys
+
+expressions = """
+        locale.getpreferredencoding()
+        type(my_file)
+        my_file.encoding
+        sys.stdout.isatty()
+        sys.stdout.encoding
+        sys.stdin.isatty()
+        sys.stdin.encoding
+        sys.stderr.isatty()
+        sys.stderr.encoding
+        sys.getdefaultencoding()
+        sys.getfilesystemencoding()
+    """
+
+my_file = open('dummy', 'w')
+sys.stdout.isatty()
+for expression in expressions.split():
+    value = eval(expression)
+    print(expression.rjust(30), '->', repr(value))
