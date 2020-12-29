@@ -305,8 +305,32 @@ print(asciize(order))
 
 # in short, pyuca is used for sorting non-English strings properly
 import pyuca
+import re
 
 coll = pyuca.Collator()
 fruits = ['açaí', 'acerola', 'atemoia', 'cajá', 'caju']
 fruits = sorted(fruits, key=coll.sort_key)
 print(fruits)
+
+# \bXX   \b means the following two XX interpreted as hex for the char code
+# \uXXXX  \n means unicode, so, four hex following
+sample = '1\xbc\xb2\u0969\u136b\u216b\u2466\u2480\u3285'
+# sample1 = '1\u00bc\u00b2\u0969\u136b\u216b\u2466\u2480\u3285'
+# print(sample == sample1)
+
+# r stands for raw string, use this to avoid escaping headache
+#
+re_digit = re.compile(r'\d')
+
+for c in sample:
+    print(
+        'U+%04x' % ord(c),
+        c.center(6),
+        're_dig' if re_digit.match(c) else '-',
+        'isdig' if c.isdigit() else '-',
+        'isnum' if c.isnumeric() else '-',
+        'isdeci' if c.isdecimal() else '-',
+        format(unicodedata.numeric(c), '5.2f'),
+        unicodedata.name(c),
+        sep='\t'
+    )
