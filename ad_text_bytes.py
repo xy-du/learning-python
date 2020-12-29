@@ -296,3 +296,9 @@ print(asciize(order))
 
 # test='açaí'
 # print(shave_marks_latin(test))
+
+
+# for simple sorting, like the sort function, python will just compare the unicode, which will produce unwanted
+# results for non-ASCII language
+# the standard way to sort non-ASCII text python is to use the locale.strxfrm function, but the involve the locale
+# setting of the system you are running and this produce many headache, so maybe it's best to just forget about it
