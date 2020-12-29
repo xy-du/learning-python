@@ -334,3 +334,26 @@ for c in sample:
         unicodedata.name(c),
         sep='\t'
     )
+
+re_numbers_str = re.compile(r'\d+')
+re_word_str = re.compile(r'\w+')
+re_numbers_byte = re.compile(rb'\d+')
+re_word_byte = re.compile(rb'\w+')
+
+text_str = ("Ramanujan saw \u0be7\u0bed\u0be8\u0bef"
+            " as 1729 = 1³ + 12³ = 9³ + 10³.")
+text_str_byte = text_str.encode('utf8')
+
+print('Text', repr(text_str), sep='\n')
+
+# for number
+# the unicode pattern can recognize  ௧௭௨௯  but the byte pattern can not
+print('Number')
+print(re_numbers_str.findall(text_str))
+print(re_numbers_byte.findall(text_str_byte))
+
+# for words
+# the unicode pattern can recognize ௧௭௨௯ and superscripts which the byte type can not
+print('Word')
+print(re_word_str.findall(text_str))
+print(re_word_byte.findall(text_str_byte))
