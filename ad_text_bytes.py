@@ -357,3 +357,30 @@ print(re_numbers_byte.findall(text_str_byte))
 print('Word')
 print(re_word_str.findall(text_str))
 print(re_word_byte.findall(text_str_byte))
+
+# GNU/linux kernel is not Unicode savvy
+# in real world you may find that the bytes of filenames are not sensible in any encoding schema
+
+# all os function can accept str or bytes as arguments, and return the same type. internally, it use the
+# sys.getfilesystemencoding() to get the codec and do the conversion automatically
+# but, is you are dealing with filenames that can not be handled in this way, you can always pass bytes to the
+# os functions and get bytes back, this will always work!  e.g.:
+# os.listdir('.')     # pass str
+# os.listdir(b'.')    # pass bytes
+
+# two utils function, both use the sys.getfilessystemencoding()
+# fsencode(filename)
+# fsdecode(filename)
+
+# unless you always use bytes, you may encounter encoding/decoding problem. To avoid this chokes the program,
+# Unix-derived platforms use   surrogateescape   error handler
+# Windows use  strict error handler
+
+# surrogateescape : deal with unexpected butes or unknown encodingss
+# the idea is the replace the unknow bytes with the Unicode range from U+DC00 to U+DCFF, in which range
+# no characters assigned
+# RUN the following lines in python terminal since there are non-unicode bytes that can not using print()
+# since python will always try to show the text in unicode (utf8) format
+# filename_bytes = b'digits-of-\xcf\x80.txt'
+# filename_bytes.decode('ascii', 'surrogateescape')
+# 'digits-of-\udccf\udc80.txt'
