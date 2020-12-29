@@ -302,3 +302,11 @@ print(asciize(order))
 # results for non-ASCII language
 # the standard way to sort non-ASCII text python is to use the locale.strxfrm function, but the involve the locale
 # setting of the system you are running and this produce many headache, so maybe it's best to just forget about it
+
+# in short, pyuca is used for sorting non-English strings properly
+import pyuca
+
+coll = pyuca.Collator()
+fruits = ['açaí', 'acerola', 'atemoia', 'cajá', 'caju']
+fruits = sorted(fruits, key=coll.sort_key)
+print(fruits)
