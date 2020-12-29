@@ -224,3 +224,75 @@ print(s1.casefold() == s2.casefold())
 print(normalize('NFC', s1) == normalize('NFC', s2))
 # All in All, maybe sometimes, it's necessary to combine NFC and casefold() to do the work
 print(normalize('NFC', s1.casefold()) == normalize('NFC', s2.casefold()))
+
+import unicodedata
+import string
+
+
+def shave_marks(str):
+    str_nfd = normalize('NFD', str)
+    str_shaved = ''.join(c for c in str_nfd
+                         if not unicodedata.combining(c))
+    return normalize('NFC', str_shaved)
+
+
+# the most important logic below is that it assumes that the combining char is right behind the char it companies with
+# you can use the έ in Ζέφυρος to try out the procedure in your mind
+def shave_marks_latin(txt):
+    str_nfd = normalize('NFD', txt)
+    islatin = False  # considering the first char will never be a combining char
+    keeper = []
+    for c in str_nfd:
+        if unicodedata.combining(c) and islatin:  # remove all the combining char for latin base
+            continue
+        keeper.append(c)
+        if not unicodedata.combining(c):
+            islatin = c in string.ascii_letters
+    return normalize('NFC', ''.join(keeper))
+
+
+# char-to-char, western character to ASCII
+# if two arguments for maketrans, they are equal of length, return a char to char translation map
+single_map = str.maketrans("""‚ƒ„†ˆ‹‘’“”•–—˜›""",
+                           """'f"*^<''""---~>""")
+
+#  If there is only one argument, it must be a dictionary mapping Unicode ordinals (integers) or characters
+#  (strings of length 1) to Unicode ordinals, strings (of arbitrary lengths) or None.
+multi_map = str.maketrans({  # <2>
+    '€': '<euro>',
+    '…': '...',
+    'Œ': 'OE',
+    '™': '(TM)',
+    'œ': 'oe',
+    '‰': '<per mille>',
+    '‡': '**',
+})
+# merge two maps
+multi_map.update(single_map)
+
+
+def dewinize(txt):
+    """replace win1253 symbols with ASCII chars or sequences"""
+    return txt.translate(multi_map)
+
+
+def asciize(txt):
+    no_marks = shave_marks_latin(dewinize(txt))
+    no_marks = no_marks.replace('ß', 'ss')
+    return normalize('NFKC', no_marks)
+
+
+order = '“Herr Voß: • ½ cup of Œtker™ caffè latte • bowl of açaí.”'
+greek = 'Ζέφυρος, Zéfiro'
+
+print(shave_marks(order))
+print(shave_marks(greek))
+
+print(shave_marks_latin(order))
+print(shave_marks_latin(greek))
+
+print(dewinize(order))
+print(asciize(order))
+
+# test='açaí'
+# print(shave_marks_latin(test))
