@@ -56,4 +56,16 @@ from operator import add
 # pure expression.  can not make assignment or use any other Python statement such as while,try,etc
 # the best use of anonymous functions is in the context of an argument list.
 # outsize the arguments to higher-order functions, anonymous functions are rarely useful in Python
-print(sorted(fruits, key=lambda word: word[::-1]))
+# print(sorted(fruits, key=lambda word: word[::-1]))
+
+# seven callable objects in python
+# built-in function.  len  time.shrftime
+# built-in method   dict.get
+# user-defined functions
+# method.   functions defined in the body of a class
+# class.   __new__   __init__   then return new object to caller
+# class instances.   if a class implements __call__  method. its instance can be invoked as a function
+# generator function.    method or function using the yield keywords to return a generator
+
+# the safiest way to determine if an object is callable is use the callable() built-in:
+print([callable(obj) for obj in (abs, str, 123)])
