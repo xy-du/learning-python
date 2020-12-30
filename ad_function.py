@@ -41,13 +41,19 @@ l1 = list(map(fact, range(6)))
 l2 = [fact(n) for n in range(6)]
 l3 = list(map(fact, filter(lambda n: n % 2, range(6))))
 l4 = [fact(n) for n in range(6) if n % 2]
-print(l1)
-print(l2)
-print(l3)
-print(l4)
+# print(l1)
+# print(l2)
+# print(l3)
+# print(l4)
 
 from functools import reduce
 from operator import add
 
-print(reduce(add, range(100)))
-print(sum(range(100)))
+# print(reduce(add, range(100)))
+# print(sum(range(100)))
+
+# lambda is used to create an anonymous function
+# pure expression.  can not make assignment or use any other Python statement such as while,try,etc
+# the best use of anonymous functions is in the context of an argument list.
+# outsize the arguments to higher-order functions, anonymous functions are rarely useful in Python
+print(sorted(fruits, key=lambda word: word[::-1]))
