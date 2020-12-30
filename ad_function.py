@@ -92,6 +92,27 @@ class BingoCage:
 
 
 bingo = BingoCage(range(3))
-print(bingo.pick())
-print(bingo())
-print(callable(bingo))
+# print(bingo.pick())
+# print(bingo())
+# print(callable(bingo))
+
+
+# function object has many attributes beyond __doc__, see below
+print(dir(factorial))
+
+
+# like the instances of user-defined class, function use __dict__ to store its attributes
+# assign arbitrary attribute to functions is not a common prctice in general, but it can be done, and Django use
+# this a lot
+# we put our attentio to the attributes that is specific to functions and not in the general classes
+# eg. __code__ __defaults__  __annotations__ in this 'special set' will be used by IDEs and framework
+class C:
+    pass
+
+
+def func():
+    pass
+
+
+obj = C()
+print(set(dir(func)) - set(dir(obj)))
