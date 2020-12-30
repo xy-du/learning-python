@@ -68,4 +68,30 @@ from operator import add
 # generator function.    method or function using the yield keywords to return a generator
 
 # the safiest way to determine if an object is callable is use the callable() built-in:
-print([callable(obj) for obj in (abs, str, 123)])
+# print([callable(obj) for obj in (abs, str, 123)])
+
+
+# not only Python function can be object, object can be made to behave like function.
+# implement a __call__ instance method is all it takes
+import random
+
+
+class BingoCage:
+    def __init__(self, items):
+        self._items = list(items)
+        random.shuffle(self._items)
+
+    def pick(self):
+        try:
+            return self._items.pop()
+        except IndexError:
+            raise LookupError('pick from empty BingoCage')
+
+    def __call__(self, *args, **kwargs):
+        return self.pick()
+
+
+bingo = BingoCage(range(3))
+print(bingo.pick())
+print(bingo())
+print(callable(bingo))
