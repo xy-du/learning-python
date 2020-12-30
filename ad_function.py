@@ -14,7 +14,7 @@ def factorial(n):
 # print(factorial.__doc__)
 # print(type(factorial))
 #
-# fact = factorial
+fact = factorial
 # print(fact)
 # fact(5)
 # print(map(factorial, range(11)))
@@ -25,7 +25,9 @@ def factorial(n):
 # receive function as args, return function as result
 # eg.  map, filter, reduce, apply
 fruits = ['strawberry', 'fig', 'apple', 'cherry', 'raspberry', 'banana']
-print(sorted(fruits, key=len))
+
+
+# print(sorted(fruits, key=len))
 
 
 def reverse(words):
@@ -33,4 +35,19 @@ def reverse(words):
 
 
 # the origin data is not changed
-print(sorted(fruits, key=reverse))
+# print(sorted(fruits, key=reverse))
+
+l1 = list(map(fact, range(6)))
+l2 = [fact(n) for n in range(6)]
+l3 = list(map(fact, filter(lambda n: n % 2, range(6))))
+l4 = [fact(n) for n in range(6) if n % 2]
+print(l1)
+print(l2)
+print(l3)
+print(l4)
+
+from functools import reduce
+from operator import add
+
+print(reduce(add, range(100)))
+print(sum(range(100)))
