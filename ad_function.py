@@ -92,13 +92,15 @@ class BingoCage:
 
 
 bingo = BingoCage(range(3))
+
+
 # print(bingo.pick())
 # print(bingo())
 # print(callable(bingo))
 
 
 # function object has many attributes beyond __doc__, see below
-print(dir(factorial))
+# print(dir(factorial))
 
 
 # like the instances of user-defined class, function use __dict__ to store its attributes
@@ -115,4 +117,50 @@ def func():
 
 
 obj = C()
-print(set(dir(func)) - set(dir(obj)))
+
+
+# print(set(dir(func)) - set(dir(obj)))
+
+# Positional arguments: just normal type we see a lot, a simple name there, and python will give it its value based on
+#                       there p=position, order matters in this type of arguments
+# default value argument: arg_name=default_value, by this way, when the arg_name is not give a specific value,
+#                         default_value will be used
+# keyword arguments: this is more on the calling side, when call a function, use explicit arg name to pass the value
+#                    in the key=value form
+# arbitrary number of arguments:
+#       arbitrary arguments: *args, receive arbitrary number of values, used for 'iterables'
+#       arbitrary keyword arguments: **args, receive arbitrary number of key-value pairs, used for 'mappings'
+# keyword-only arguments:
+#       function(a,*b,c), here the c argument if the keyword-only arguments, because if you do not use keyword format
+#       to pass the value, *b will 'intercept' all the values except the one for a, eg. function(1,2,3,c=4)
+
+# THE POST IMPORTANT RULEs!!!
+# python matches positional and keyword arguments first and then collects any remaining arguments in the final parameter
+
+def tag(name, *content, cls=None, **attrs):
+    """Generate one or more HTML tags"""
+    if cls is not None:
+        attrs['class'] = cls
+    if attrs:
+        attr_str = ''.join(' %s="%s"' % (attr, value)
+                           for attr, value
+                           in sorted(attrs.items()))
+    else:
+        attr_str = ''
+    if content:
+        return '\n'.join('<%s%s>%s</%s>' %
+                         (name, attr_str, c, name) for c in content)
+    else:
+        return '<%s%s />' % (name, attr_str)
+
+
+print(tag('name', 'A_Content'))
+print(tag('name', 'A_Content', 'B_Content'))
+print(tag('name', 'A_Content', cls='B_Content'))  # keyword-only argument cls
+print(tag('name', key1='value1', key2='value2'))
+print(tag('name', key1='value1', key2='value2', cls='classvalue'))  # **args will not affect keyword argument
+params = {'name': 'name', 'cls': 'classvalue', 'key1': 'value1', 'key2': 'value2'}
+print(tag(**params))  # **params passes all its items as separate arguments
+# **args makes me think of the *tuple way to pass the example
+tp = ('name', 'A_Content', 'B_Content')
+print(tag(*tp))  # apparently, this can not manage the key:value style argument value passing
