@@ -154,13 +154,69 @@ def tag(name, *content, cls=None, **attrs):
         return '<%s%s />' % (name, attr_str)
 
 
-print(tag('name', 'A_Content'))
-print(tag('name', 'A_Content', 'B_Content'))
-print(tag('name', 'A_Content', cls='B_Content'))  # keyword-only argument cls
-print(tag('name', key1='value1', key2='value2'))
-print(tag('name', key1='value1', key2='value2', cls='classvalue'))  # **args will not affect keyword argument
-params = {'name': 'name', 'cls': 'classvalue', 'key1': 'value1', 'key2': 'value2'}
-print(tag(**params))  # **params passes all its items as separate arguments
-# **args makes me think of the *tuple way to pass the example
-tp = ('name', 'A_Content', 'B_Content')
-print(tag(*tp))  # apparently, this can not manage the key:value style argument value passing
+# print(tag('name', 'A_Content'))
+# print(tag('name', 'A_Content', 'B_Content'))
+# print(tag('name', 'A_Content', cls='B_Content'))  # keyword-only argument cls
+# print(tag('name', key1='value1', key2='value2'))
+# print(tag('name', key1='value1', key2='value2', cls='classvalue'))  # **args will not affect keyword argument
+# params = {'name': 'name', 'cls': 'classvalue', 'key1': 'value1', 'key2': 'value2'}
+# print(tag(**params))  # **params passes all its items as separate arguments
+# # **args makes me think of the *tuple way to pass the example
+# tp = ('name', 'A_Content', 'B_Content')
+# print(tag(*tp))  # apparently, this can not manage the key:value style argument value passing
+
+def clip(text, max_len=80):
+    end = None
+    if len(text) > max_len:
+        space_index = text.rfind(' ', 0, max_len)
+        if space_index >= 0:
+            end = space_index
+        else:
+            space_index = text.find(' ', max_len)
+            if space_index >= 0:
+                end = space_index
+    if not end:
+        end = len(text)
+    return text[:end]
+
+
+# __default__ holds the value of the default value of the positional and keyword arguments in a tuple, but these values
+# is identified only by its position, so to link them respectively with their arguments which you get by combining
+# __code__.co_varcount and __code__covarnames described below, you have to scan it from the last to the first
+# By the way, the defaults value of keyword-only arguments appear in __kwdefaults__
+# note here are only the default values, the args name are in the __code__ object
+print(clip.__defaults__)
+# __code__  is a reference to a code object, which hold the name of the arguments
+print(clip.__code__)
+# arguments is the fist N=__code__.co_argcount strings, since it also include the names of the local variables
+# and co_varnames include the names of *arg and **arg type of arguments (appearing after the positional and keyword
+# arguments name), while co_argcount does not count these types
+print(clip.__code__.co_varnames)
+print(clip.__code__.co_argcount)
+
+# as we can see, the way above to gain inspection is very inconvenient
+# luckily, there is a module called inspect
+print("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
+from inspect import signature
+
+sig = signature(tag)
+print(sig)
+for name, params in sig.parameters.items():  # sig.parameters is a ordered mapping
+    print(name, params.name, params.default, params.kind)  # there 5 kinds of _ParameterKind
+
+print("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
+# Signature has a method : bind.
+# take any number of arguments and binds them to the parameters in the signature, applying the usual rules for
+# matching actual arguments to formal parameters
+# this can be used by a framework or IDE to validate arguments prior to the actual function invocation.
+
+my_tag = {'name': 'img', 'title': 'Sunset Boulevard', 'src': 'sunset.jpg', 'cls': 'framed'}
+bound_args = sig.bind(**my_tag)
+for name, value in bound_args.arguments.items():
+    print(name, value)
+
+# remove the name attribute in the arguments will break the arguments-parameters-binding rule python using and
+# cause an TypeError: missing a required argument:'name'
+# frameworks and toools like IDE can use the information to validate code
+# del my_tag['name']
+# bound_args = sig.bind(**my_tag) #TypeError: missing a required argument: 'name'
