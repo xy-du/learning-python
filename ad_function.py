@@ -266,7 +266,7 @@ def fact(n):
     return reduce(lambda a, b: a * b, range(1, n + 1))
 
 
-print(fact(5))
+# print(fact(5))
 
 # but if you use the mul function from operator module, well, see for yourself:
 from operator import mul
@@ -276,7 +276,7 @@ def fact_op(n):
     return reduce(mul, range(1, n + 1))
 
 
-print(fact_op(5))
+# print(fact_op(5))
 
 # Another group of one-trick lambdas that operator replaces are functions to pick items from sequences or read
 # attributes from objects: itemgetter and attrgetter actually build custom functions to do that.
@@ -292,12 +292,12 @@ metro_data = [
 # get the field of a collection you link together or pass in.
 from operator import itemgetter
 
-for city in sorted(metro_data, key=itemgetter(1)):
-    print(city)
+# for city in sorted(metro_data, key=itemgetter(1)):
+#     print(city)
 
 cc_name = itemgetter(1, 0)
-for city in metro_data:
-    print(cc_name(city))
+# for city in metro_data:
+#     print(cc_name(city))
 
 # a sibling of itemgetter is attrgetter, which creates functions to extract object at attributes by name
 
@@ -311,14 +311,14 @@ Metropolis = namedtuple('Metropolis', 'name cc pop coord')
 metro_date_ls = [Metropolis(name, cc, pop, LatLong(lat, long))
                  for name, cc, pop, (lat, long) in metro_data]
 
-print(metro_date_ls[0])
-print(metro_date_ls[0].coord.lat)
+# print(metro_date_ls[0])
+# print(metro_date_ls[0].coord.lat)
 
 # here, again, we can see that the tuple can not only be seen as a immutable sequence, but a set of record
 # with every field in it named and a light weight solution for class.
 name_lat = attrgetter('name', 'coord.lat')
-for city in sorted(metro_date_ls, key=attrgetter('coord.lat')):
-    print(name_lat(city))
+# for city in sorted(metro_date_ls, key=attrgetter('coord.lat')):
+#     print(name_lat(city))
 
 # methodcaller, just like itergetter and attrgetter, it create a method on the fly, the function it create calls
 # the method of the object given as a argument.
@@ -327,4 +327,42 @@ from operator import methodcaller
 
 s = 'The time has come'
 upper_caller = methodcaller('upper')
-print(upper_caller(s))
+# print(upper_caller(s))
+
+# freezing arguments
+hiphenate = methodcaller('replace', ' ', '-')
+print(hiphenate(s))
+
+# functools module brings a lot higher-order functions
+# the best known of them is reduce
+# of the remaining functions in functools, the most useful is partial and its variation, partialmethod
+# partial produce a callable with some of the arguments of the original function fixed, this is useful to adapt a
+# function that takes one or more arguments to an API that requires a callback with fewer argumemts
+# partialmethod is new in python3.4, it does the same job as partial, but is designed to work with methods.
+
+from operator import mul
+from functools import partial
+
+triple = partial(mul, 3)
+print(triple(7))
+print(list(map(triple, range(1, 10))))
+
+from unicodedata import normalize
+
+s1 = 'codé'
+s2 = 'code\u0301'
+nfc = partial(normalize, 'NFC')
+print(s1, s2)
+print(s1 == s2)
+print(nfc(s1), nfc(s2))
+print(nfc(s1) == nfc(s2))
+
+# partial takes a callable as first argument, followed by an arbitrary number of positional and
+# keyword arguments to bind
+
+img_tag = partial(tag, 'img', cls='pic-frame')
+print(img_tag)
+print(img_tag(src='dxy.jpg'))
+print(img_tag.func)
+print(img_tag.args)
+print(img_tag.keywords)
