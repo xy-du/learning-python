@@ -244,11 +244,87 @@ def clip(text: str, max_len: 'int > 0' = 80) -> str:
     return text[:end]
 
 
-print(clip.__annotations__)
+# print(clip.__annotations__)
 
 # inspect.signature() knows how to extract the annotations
 sig = signature(clip)
-print(sig.return_annotation)
+# print(sig.return_annotation)
 for param in sig.parameters.values():
     format_name = repr(param.name).ljust(10)
-    print(format_name, param.annotation)
+    # print(format_name, param.annotation)
+
+# packages for functional programming
+
+# the operator module
+# so what in it to use operator module?
+# consider you want to multiply a sequence of numbers to calculate factorials without using recursion
+# you can use reduce and lambda, but it's trivial, since you hve to multiply two items of the sequence
+from functools import reduce
+
+
+def fact(n):
+    return reduce(lambda a, b: a * b, range(1, n + 1))
+
+
+print(fact(5))
+
+# but if you use the mul function from operator module, well, see for yourself:
+from operator import mul
+
+
+def fact_op(n):
+    return reduce(mul, range(1, n + 1))
+
+
+print(fact_op(5))
+
+# Another group of one-trick lambdas that operator replaces are functions to pick items from sequences or read
+# attributes from objects: itemgetter and attrgetter actually build custom functions to do that.
+
+metro_data = [
+    ('Tokyo', 'JP', 36.933, (35.689722, 139.691667)),
+    ('Delhi NCR', 'IN', 21.935, (28.613889, 77.208889)),
+    ('Mexico City', 'MX', 20.142, (19.433333, -99.133333)),
+    ('New York-Newark', 'US', 20.104, (40.808611, -74.020386)),
+    ('Sao Paulo', 'BR', 19.649, (-23.547778, -46.635833)),
+]
+
+# get the field of a collection you link together or pass in.
+from operator import itemgetter
+
+for city in sorted(metro_data, key=itemgetter(1)):
+    print(city)
+
+cc_name = itemgetter(1, 0)
+for city in metro_data:
+    print(cc_name(city))
+
+# a sibling of itemgetter is attrgetter, which creates functions to extract object at attributes by name
+
+from collections import namedtuple
+from operator import attrgetter
+
+# it's the best to name the variable exact the same of the first argument 'typename' ?? en... I think so..
+LatLong = namedtuple('LatLong', 'lat long')
+Metropolis = namedtuple('Metropolis', 'name cc pop coord')
+
+metro_date_ls = [Metropolis(name, cc, pop, LatLong(lat, long))
+                 for name, cc, pop, (lat, long) in metro_data]
+
+print(metro_date_ls[0])
+print(metro_date_ls[0].coord.lat)
+
+# here, again, we can see that the tuple can not only be seen as a immutable sequence, but a set of record
+# with every field in it named and a light weight solution for class.
+name_lat = attrgetter('name', 'coord.lat')
+for city in sorted(metro_date_ls, key=attrgetter('coord.lat')):
+    print(name_lat(city))
+
+# methodcaller, just like itergetter and attrgetter, it create a method on the fly, the function it create calls
+# the method of the object given as a argument.
+
+from operator import methodcaller
+
+s = 'The time has come'
+upper_caller = methodcaller('upper')
+print(upper_caller(s))
