@@ -75,7 +75,7 @@ def fidelity_promo(order):
     return 0.05 * order.total() if order.customer.fedility >= 1000 else 0
 
 
-def bulkitem_promp(order):
+def bulkitem_promo(order):
     """%10 discount for each lineitem with 20 or more units"""
     discount = 0
     for item in order.cart:
@@ -111,7 +111,12 @@ long_order = [LineItem(str(prod_code), 1, 1.0) for prod_code in range(10)]
 # to choose the best strategy, here is the simple approach
 # you should get used to the first-class feature of the functions in python, then it's nature to building data structure
 # that hold functions as its element
-promos = [fidelity_promo, bulkitem_promp, large_order_promo]
+
+# promos = [fidelity_promo, bulkitem_promp, large_order_promo]
+promos = [globals()[name] for name in globals()
+          if name.endswith('_promo')
+          and name != 'best_promos']
+print(promos)
 
 
 # this is indeed a simple approach
