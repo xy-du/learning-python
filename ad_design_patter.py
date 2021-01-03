@@ -113,10 +113,19 @@ long_order = [LineItem(str(prod_code), 1, 1.0) for prod_code in range(10)]
 # that hold functions as its element
 
 # promos = [fidelity_promo, bulkitem_promp, large_order_promo]
-promos = [globals()[name] for name in globals()
-          if name.endswith('_promo')
-          and name != 'best_promos']
-print(promos)
+
+
+# promos = [globals()[name] for name in globals()
+#           if name.endswith('_promo')
+#           and name != 'best_promos']
+# print(promos)
+
+import promotions
+import inspect
+
+# NOTE that the promotions module contains only functions that calcilate discount given orders. this is an implicit
+# assumption of the code
+promos = [func for name, func in inspect.getmembers(promotions, inspect.isfunction)]
 
 
 # this is indeed a simple approach
