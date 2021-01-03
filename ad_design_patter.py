@@ -80,7 +80,7 @@ def bulkitem_promp(order):
     discount = 0
     for item in order.cart:
         if item.quantity >= 20:
-            discount += item.total() * 0.01
+            discount += item.total() * 0.1
     return discount
 
 
@@ -103,7 +103,24 @@ long_order = [LineItem(str(prod_code), 1, 1.0) for prod_code in range(10)]
 
 # pass in FidelityPromo() instead of FidelityProme, do not confuse class with function
 # FidelityPromo() means it's an instance of the class
-print(Order(joe, cart, fidelity_promo))
-print(Order(ann, cart, fidelity_promo))
-print(Order(joe, banana_cart, bulkitem_promp))
-print(Order(joe, long_order, large_order_promo))
+# print(Order(joe, cart, fidelity_promo))
+# print(Order(ann, cart, fidelity_promo))
+# print(Order(joe, banana_cart, bulkitem_promp))
+# print(Order(joe, long_order, large_order_promo))
+
+# to choose the best strategy, here is the simple approach
+# you should get used to the first-class feature of the functions in python, then it's nature to building data structure
+# that hold functions as its element
+promos = [fidelity_promo, bulkitem_promp, large_order_promo]
+
+
+# this is indeed a simple approach
+# BUT, what if you have a new promotion strategy? you have to manually code it into the list, or it can only be used
+# when pass as a argument into Order
+def best_promo(order):
+    return max(promo(order) for promo in promos)
+
+
+print(Order(joe, long_order, best_promo))
+print(Order(joe, banana_cart, best_promo))
+print(Order(ann, cart, best_promo))
