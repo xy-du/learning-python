@@ -1,2 +1,4 @@
 /hack_library/
 /venv/
+.idea
+__pycache__/
