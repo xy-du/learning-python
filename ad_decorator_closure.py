@@ -15,4 +15,43 @@ def target():
 
 
 # this will actually run the inner function in the deco
-target()
+# target()
+
+register = []
+
+
+# a real decorator normally will not return the same function but a new inner function. But return a same one
+# can indeed happen in same framework where the decorator are used for, say, register.
+# see also the test.py and understand the invoke time for decorated function
+# and that highlights the difference between 'import time' and 'runtime'
+def decorator(func):
+    print('decrate function at', func)
+    register.append(func)
+    return func
+
+
+# after this function is defined, the decorated function is invoked immediately
+@decorator
+def func1():
+    print('this is func1')
+
+
+@decorator
+def func2():
+    print('this is func2')
+
+
+# this normal function is invoked when it's called
+def func3():
+    print('this is func3')
+
+
+def main():
+    print(register)  # you will see the func1 and func2 has already append into this list
+    func1()  # three normal function invoke
+    func2()
+    func3()
+
+
+if __name__ == '__main__':
+    main()
