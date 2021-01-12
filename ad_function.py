@@ -331,7 +331,7 @@ upper_caller = methodcaller('upper')
 
 # freezing arguments
 hiphenate = methodcaller('replace', ' ', '-')
-print(hiphenate(s))
+# print(hiphenate(s))
 
 # functools module brings a lot higher-order functions
 # the best known of them is reduce
@@ -344,25 +344,79 @@ from operator import mul
 from functools import partial
 
 triple = partial(mul, 3)
-print(triple(7))
-print(list(map(triple, range(1, 10))))
+# print(triple(7))
+# print(list(map(triple, range(1, 10))))
 
 from unicodedata import normalize
 
 s1 = 'codé'
 s2 = 'code\u0301'
 nfc = partial(normalize, 'NFC')
-print(s1, s2)
-print(s1 == s2)
-print(nfc(s1), nfc(s2))
-print(nfc(s1) == nfc(s2))
+# print(s1, s2)
+# print(s1 == s2)
+# print(nfc(s1), nfc(s2))
+# print(nfc(s1) == nfc(s2))
 
 # partial takes a callable as first argument, followed by an arbitrary number of positional and
 # keyword arguments to bind
 
 img_tag = partial(tag, 'img', cls='pic-frame')
-print(img_tag)
-print(img_tag(src='dxy.jpg'))
-print(img_tag.func)
-print(img_tag.args)
-print(img_tag.keywords)
+# print(img_tag)
+# print(img_tag(src='dxy.jpg'))
+# print(img_tag.func)
+# print(img_tag.args)
+# print(img_tag.keywords)
+
+
+#############################################
+# run separately on the python console to see the output and error
+# select this fragment and option+shift+E in Pycharm
+#############################################
+# without this b=3 assignment, when you run f1() below, you will get name 'b' is not defined, which is absolutely
+# normal
+b = 3
+
+
+def f1(a):
+    print(a)
+    print(b)
+
+
+f1(1)
+#############################################
+# run separately on the python console to see the output and error
+# select this fragment and option+shift+E in Pycharm
+#############################################
+# even with this d =3 assignment, when you run f2(4) below, you will get the error:
+# UnboundLocalError: local variable 'd' referenced before assignment
+# in another word, the d is considered as local variable instead of global one, because of the 'd=9' in the function
+# this is not a bug, but a design choice:
+# when python compile the body of the function ,it's decided that d is a local variables. python does not
+# require you to declare variables, but assumes that a variable assigned in the body of a function is local
+d = 3
+
+
+def f2(c):
+    print(c)
+    print(d)
+    d = 9
+
+
+f2(4)
+
+#############################################
+# run separately on the python console to see the output and error
+# select this fragment and option+shift+E in Pycharm
+#############################################
+d = 3
+
+
+def f2(c):
+    global d  # with this line, the d will be seen as global, so print(d) will be ok
+    print(c)
+    print(d)
+    d = 9
+
+
+f2(4)
+print(d)
