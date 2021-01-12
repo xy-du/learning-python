@@ -70,11 +70,23 @@ class Promotion(ABC):
 #             return order.total() * 0.07
 #         return 0
 
+# the disadvantage of the old way to record all the promotion functions is that when you add a new one, you have
+# to add it manually, and you could forget it and get the wrong best promotion. With decorator, this is solved
+promos = []
+
+
+def promotion(func):
+    promos.append(func)
+    return func
+
+
+@promotion
 def fidelity_promo(order):
     """5% discount for customers with 1000 or more fedility points"""
     return 0.05 * order.total() if order.customer.fedility >= 1000 else 0
 
 
+@promotion
 def bulkitem_promo(order):
     """%10 discount for each lineitem with 20 or more units"""
     discount = 0
@@ -84,6 +96,7 @@ def bulkitem_promo(order):
     return discount
 
 
+@promotion
 def large_order_promo(order):
     """%7 discount for orders with 10 or more distinct items"""
     distinct_item = {item.product for item in order.cart}
@@ -100,6 +113,7 @@ cart = [LineItem('banana', 4, .5),
 banana_cart = [LineItem('banana', 30, .5),
                LineItem('apple', 10, 1.5)]
 long_order = [LineItem(str(prod_code), 1, 1.0) for prod_code in range(10)]
+
 
 # pass in FidelityPromo() instead of FidelityProme, do not confuse class with function
 # FidelityPromo() means it's an instance of the class
@@ -120,12 +134,12 @@ long_order = [LineItem(str(prod_code), 1, 1.0) for prod_code in range(10)]
 #           and name != 'best_promos']
 # print(promos)
 
-import promotions
-import inspect
+# import promotions
+# import inspect
 
 # NOTE that the promotions module contains only functions that calcilate discount given orders. this is an implicit
 # assumption of the code
-promos = [func for name, func in inspect.getmembers(promotions, inspect.isfunction)]
+# promos = [func for name, func in inspect.getmembers(promotions, inspect.isfunction)]
 
 
 # this is indeed a simple approach
