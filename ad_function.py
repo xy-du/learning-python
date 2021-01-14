@@ -479,7 +479,59 @@ print(avg(12))
 avg.__code__.co_varnames  # ('newvalue', 'total')
 avg.__code__.co_freevars  # ('series',)
 # The binding for series is kept in the __closure__ attribute of the returned function avg. Each item in avg.__
-# closure__ corresponds to a name in avg.__code__.co_free vars. These items are cells, and they have an attribute
+# closure__ corresponds to a name in avg.__code__.co_freevars. These items are cells, and they have an attribute
 # called cell_contents where the actual value can be found
 avg.__closure__  # (<cell at 0x109614b20: list object at 0x1095fb6c0>,)
 avg.__closure__[0].cell_contents  # [10, 11, 12]
+
+
+#############################################
+# run separately on the python console to see the output and error
+# select this fragment and option+shift+E in Pycharm
+#############################################
+# nonlocal
+# this code snippet is broken, just to make a point
+
+def make_averager_2():
+    count = 0
+    value = 0
+
+    def average(newvalue):
+        count += 1
+        value += newvalue
+        return value / count
+
+    return average
+
+
+#############################################
+# run separately on the python console to see the output and error
+# select this fragment and option+shift+E in Pycharm
+#############################################
+# the value and count is unresolved parameter, ?, so where is the closure?
+# Truth is that:
+# count+=1 means count=count+1, so we are assigning to count in the body of the inner function, which makes it a local
+# variable. The same goes with other immutable types like numbers, strings, tupels, etc., for these, if you try to
+# rebind them, you will make them a local variable. So in the last example, we take advantage of the fact that lists are
+# mutable
+# to work around this, the nonlocal declaration was introduced in python3, it flag a variable as a free variable even
+# when it is assigned a new value within the function
+
+
+def make_averager_2():
+    count = 0
+    value = 0
+
+    def average(newvalue):
+        nonlocal count, value
+        count += 1
+        value += newvalue
+        return value / count
+
+    return average
+
+
+avg2 = make_averager_2()
+print(avg2(10))
+print(avg2(11))
+print(avg2(12))
