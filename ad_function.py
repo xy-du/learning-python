@@ -420,3 +420,66 @@ def f2(c):
 
 f2(4)
 print(d)
+
+
+#############################################
+# run separately on the python console to see the output and error
+# select this fragment and option+shift+E in Pycharm
+#############################################
+
+# closure
+# a avg function to compute the mean of an ever-increasing series of values
+
+# the class way
+class Averager():
+    def __init__(self):
+        self.series = []
+
+    def __call__(self, newvalue):
+        self.series.append(newvalue)
+        total = sum(self.series)
+        return total / len(self.series)
+
+
+avg = Averager()
+print(avg(10))
+print(avg(11))
+print(avg(12))
+
+
+#############################################
+# run separately on the python console to see the output and error
+# select this fragment and option+shift+E in Pycharm
+#############################################
+
+# the function way
+def make_avarager():
+    series = []
+
+    def avarager(newvalue):
+        series.append(newvalue)
+        total = sum(series)
+        return total / len(series)
+
+    return avarager
+
+
+# Note that series is a local variable of make_averager because the initialization series = [] happens in the body of
+# that function. But when avg(10) is called, make_averager has already returned, and its local scope is long gone.
+# Within averager, series is a free variable. This is a technical term meaning a variable that is not bound in the
+# local scope.
+# A closure is a function that retains the bindings of the free variables that exist when the function is defined,
+# so that they can be used later when the function is invoked and the defining scope is no longer available.
+avg = make_avarager()
+print(avg(10))
+print(avg(11))
+print(avg(12))
+
+# inspect the function created by make_avarager()
+avg.__code__.co_varnames  # ('newvalue', 'total')
+avg.__code__.co_freevars  # ('series',)
+# The binding for series is kept in the __closure__ attribute of the returned function avg. Each item in avg.__
+# closure__ corresponds to a name in avg.__code__.co_free vars. These items are cells, and they have an attribute
+# called cell_contents where the actual value can be found
+avg.__closure__  # (<cell at 0x109614b20: list object at 0x1095fb6c0>,)
+avg.__closure__[0].cell_contents  # [10, 11, 12]
