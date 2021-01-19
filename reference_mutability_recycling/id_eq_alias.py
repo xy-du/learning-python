@@ -22,3 +22,19 @@ print(little_d == dxy)  # base on their content, they are equal
 # meaningful implementations that actually take into account the value of the object attributes.
 a = None
 print(a == None)
+
+print('#########################')
+t1 = (1, 2, [30, 40])
+t2 = (1, 2, [30, 40])
+print(t1 == t2)
+print(id(t1), id(t2))
+print(t1 is t2)
+print(id(t1[-1]))
+t1[-1].append(50)  # use t1[-1]+=[50] will cause error here
+print(t1)
+print(id(t1[-1]))
+#   the immutability of tuples really refers to the physical contents of the tuple data structure (i.e., the references
+# it holds), and does not extend to the referenced objects.
+#   single-type sequences like str, bytes, and array.array are flat: they don’t contain references but physically hold
+# their data—characters, bytes, and numbers—in contiguous memory.
+#   if a tuple want to be hashable, it can not include mutable objects like list.
