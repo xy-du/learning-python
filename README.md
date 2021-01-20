@@ -7,8 +7,15 @@ This project is a record of my python learning process. Each commit is a code sn
 self-contained. Generally speaking, different branches represent different topics and the commits contained therein have
 a certain continuity.
 
-How to Review
+Heads-Up
 --------------
+
+* I do not consider the branches in this repo carry the meaning that branches should. You will see that they are
+  basically sequential, and the reason is that I do want give different part of the development process of this repo
+  some kinda tag-like things, but as time goes by, I realise that I often have to use the code from a early time, so
+  totally separated branches seems not a wise choice. And I can keep merging into the master, yes, but that will be just
+  simple fast forward, so I think, why bother? :) (truth be told, I am Not very good at all this branches things. yet!
+  hahaha)
 
 * Compare every commit with the one before it to see the increment made in it.
 
