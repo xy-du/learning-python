@@ -54,6 +54,14 @@ class Bus:
         return str(self.bus)
 
 
+# as we can see in the __init__ in the class, list constructor is used to make a new copy of the original data.
+# this is something we need to consider about:
+# whether the caller expects the arguments passed to be changed. Normally, we follow a best practice of
+# interface design 'principle of least astonishment'.
+# as a bonus, this solution is more flexible, now the argument passed to the passengers parameter may be a tuple
+# or any other iterable, like a set or even database results. because the list constructor accepts any iterable.
+
+
 import copy
 
 bus = Bus(['aaa', 'bbb', 'ccc', 'ddd'])
