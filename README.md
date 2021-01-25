@@ -4,8 +4,13 @@ Introduction
 --------------
 
 This project is a record of my python learning process. Each commit is a code snippet, and most of these snippets are
-self-contained. Generally speaking, different branches represent different topics and the commits contained therein have
-a certain continuity.
+self-contained. Generally speaking, different branches represent different topics, and the commits contained therein
+have a certain continuity.
+
+Book
+--------------
+[*Fluent Python: Clear, Concise, and Effective Programming*](
+https://www.amazon.com/Fluent-Python-Concise-Effective-Programming/dp/1491946008)
 
 Heads-Up
 --------------
