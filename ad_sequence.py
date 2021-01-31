@@ -205,7 +205,7 @@ import array
 # ========here i comment it since it takes a little longer to run======
 # f_arr1 = array.array('d', (random.random() for i in range(10 ** 7)))
 # print(f_arr1[-1])
-# fp = open('floats.bin', 'wb')  # wb : write, binary
+# fp = open('floats.bin', 'wb')  # wb : write, binary  the file here will be created automatically
 # f_arr1.tofile(fp)
 # fp.close()
 # f_arr2 = array.array('d')

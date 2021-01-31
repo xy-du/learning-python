@@ -91,6 +91,8 @@ print(octets.decode('utf8', errors='replace'))  # replace by � (Official unico
 print('+++++++++++++++++++++++++++++++++++++')
 # the encoding parameter in two open below can be omitted, but that is not the best practice from the encode/decode
 # perspective, since it will only work fine because I am using OSX which utf8 is the default encoding format
+
+# create a file named text_byte.txt, and put the word café into it
 f1 = open('text_byte.txt', 'w', encoding='utf-8')
 f1.write('café')
 f1.close()
@@ -117,6 +119,7 @@ expressions = """
         sys.getfilesystemencoding()
     """
 
+# this file will create automatically
 my_file = open('dummy', 'w')
 sys.stdout.isatty()
 for expression in expressions.split():
