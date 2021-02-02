@@ -17,6 +17,12 @@ class Vector:
         self.x = float(x)  # catch args error early
         self.y = float(y)
 
+    @classmethod
+    def frombytes(cls, octets):
+        typecode = chr(octets[0])
+        mem = memoryview(octets[1:]).cast(typecode)
+        return cls(*mem)
+
     # used by tuple(), unpacking, iterator args(*Vector_instance)
     # it should return iterator type, so generator expression(genexps) used here
     def __iter__(self):
@@ -60,3 +66,6 @@ if __name__ == '__main__':
     print(bool(v))
     v1 = Vector(0, 0)
     print(bool(v1))
+
+    v2 = Vector.frombytes(byte_rep)
+    print(v2 == v)
