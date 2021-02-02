@@ -19,7 +19,7 @@ print(format(now, '%H:%M:%S'))
 print("it's now {:%I:%M %p}".format(now))
 
 # when you don't have __format__ in you class
-from vector import Vector
+from vector_2d import Vector
 
 v = Vector(1.0, 2.0)
 print(format(v))

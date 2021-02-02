@@ -3,7 +3,7 @@
 # If you write to a instance attribute that does not exist, you create a new instance attribute, and the class
 # attribute with the same name is untouched, but it will be overwrite by the instance attribute when call self.var
 
-from vector import Vector
+from vector_2d import Vector
 
 v1 = Vector(1, 2)
 dump = bytes(v1)

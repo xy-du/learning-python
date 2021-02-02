@@ -15,7 +15,7 @@
 #   if you are dealing with millions of objects with numeric data, consider using Numpy
 
 
-from vector import *
+from vector_2d import *
 
 v = Vector(1, 2)
 v.t = 'test'
