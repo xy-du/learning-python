@@ -50,6 +50,20 @@ class Vector:
     def __bool__(self):
         return bool(abs(self))
 
+    def __format__(self, format_spec=''):
+        if format_spec.endswith('p'):
+            format_spec = format_spec[:-1]  # for str, tuple, this change inplace. for list, this make a new copy
+            fmt_out = '<{},{}>'
+            mag = abs(self)
+            angle = math.atan2(self.x, self.y)
+            coord = (mag, angle)  # use tuple to unify the return format
+        else:
+            fmt_out = '({},{})'
+            coord = self
+            pass
+
+        return fmt_out.format(*(format(i, format_spec) for i in coord))
+
 
 if __name__ == '__main__':
     v = Vector(3.0, 4.0)
@@ -69,3 +83,7 @@ if __name__ == '__main__':
 
     v2 = Vector.frombytes(byte_rep)
     print(v2 == v)
+
+    print(format(v, 'p'))
+    print(format(v, '.3ep'))
+    print(format(v, '010.5fp'))
