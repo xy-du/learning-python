@@ -6,6 +6,18 @@
 #   __bytes__   used by bytes() to get obj represented by byte sequence
 #   __format__  used by built-in function format() and str.format()
 
+# when a object can be seen as hashable:
+#   support hash() function through hash() method that always return the same value over the lifetime of the
+# project
+#   it supports eq() method
+#   if a==b then hash(a)==hash(b) must also be True
+# NOTE:
+# if you implement a custom __eq__, then you also have to implement a suitable __hash__, because you have to
+# make sure that if a==b is True then hash(a)==hash(b) is also True
+
+# NOTE:
+# here I implement a pretty full-fledged object, but it's not necessary and a bad idea to implement all the
+# method if you application has no real use of them. Customers don't care if you object are 'Pythonic' or not
 import array
 import math
 
@@ -13,9 +25,25 @@ import math
 class Vector:
     typecode = 'd'
 
+    # def __init__(self, x, y):
+    #     self.x = float(x)  # catch args error early
+    #     self.y = float(y)
     def __init__(self, x, y):
-        self.x = float(x)  # catch args error early
-        self.y = float(y)
+        self.__x = float(x)
+        self.__y = float(y)
+
+    # mark the getter method of a property, every method tht reads x,y components can stay as they were
+    @property
+    def x(self):
+        return self.__x
+
+    @property
+    def y(self):
+        return self.__y
+
+    # using bitwise XOR operator(^) to mix the hashes of the components is what the document suggests
+    def __hash__(self):
+        return hash(self.x) ^ hash(self.y)
 
     @classmethod
     def frombytes(cls, octets):
@@ -87,3 +115,7 @@ if __name__ == '__main__':
     print(format(v, 'p'))
     print(format(v, '.3ep'))
     print(format(v, '010.5fp'))
+
+    # now the Vector is hashable, and it obey the "hash rule" mentioned above
+    print(hash(v))
+    print(hash(v2))
