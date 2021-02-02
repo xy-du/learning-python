@@ -24,7 +24,10 @@ Heads-Up
   commit will show, click the file you will see the changes made in that file, which is the self-contained code snippet.
 
 * import statement should on the top of every file, yes. But here in this repo, you will see import in the middle of a
-  file and I am sorry for that, it's just convenient for write and review since it's close to where it's used.
+  file, and I am sorry for that, it's just convenient for write and review since it's close to where it's used.
+
+* everytime I make a commit, I will put the keywords about this commit after the normal describing message, separated
+  with comma. I did this mostly for the convenience of searching certain topic in the IDE.
 
 * If you try to run .py files, there is something that you need to know. In the early stage of this project, you can see
   all the output in one .py file. But later, I found that this makes it hard to identify the output of certain piece of
