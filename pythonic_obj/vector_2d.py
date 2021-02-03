@@ -41,10 +41,6 @@ class Vector:
     def y(self):
         return self.__y
 
-    # using bitwise XOR operator(^) to mix the hashes of the components is what the document suggests
-    def __hash__(self):
-        return hash(self.x) ^ hash(self.y)
-
     @classmethod
     def frombytes(cls, octets):
         typecode = chr(octets[0])
@@ -64,6 +60,10 @@ class Vector:
 
     def __eq__(self, other):
         return tuple(self) == tuple(other)  # use the __iter__
+
+    # using bitwise XOR operator(^) to mix the hashes of the components is what the document suggests
+    def __hash__(self):
+        return hash(self.x) ^ hash(self.y)
 
     def __str__(self):
         # return '({},{})'.format(self.x, self.y)
