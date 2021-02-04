@@ -1,5 +1,6 @@
 import array
 import math
+import numbers
 import reprlib
 
 
@@ -42,8 +43,17 @@ class Vector:
     def __len__(self):
         return len(self._component)
 
+    # def __getitem__(self, item):
+    #     return self._component[item]
+
     def __getitem__(self, item):
-        return self._component[item]
+        cls = type(self)  # this is how you get class from instance
+        if isinstance(item, slice):
+            return cls(self._component[item])  # [] accept slice object
+        elif isinstance(item, numbers.Integral):  # abstract base class, make an API more flexible and future-proof
+            return self._component[item]
+        else:
+            raise TypeError(f'{cls.__name__} indices must be integers')
 
     @classmethod
     def frombytes(cls, octets):
@@ -57,4 +67,7 @@ if __name__ == '__main__':
     print(len(v1))
     print(v1[-1])
     v2 = Vector(range(10))
-    print(v2[1:5])  # return array('d', [1.0, 2.0, 3.0, 4.0]), but returning a Vector would be better
+    # RUN on python console (so the __repr__ is used instead of __str__ used in print())
+    # v2[1:5]  # return array('d', [1.0, 2.0, 3.0, 4.0]), but returning a Vector would be better
+    # v2[1:5] # now, it returns Vector([1.0, 2.0, 3.0, 4.0]),
+    # print(v2[1:2,4]) # this will cause error because we do not make slicing support multidimensional
