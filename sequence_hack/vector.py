@@ -1,6 +1,8 @@
 import array
+import functools
 import math
 import numbers
+import operator
 import reprlib
 
 
@@ -31,8 +33,17 @@ class Vector:
     def __bytes__(self):
         return bytes([ord(self.typecode)]) + bytes(self._component)
 
+    # # this is not the efficient way if the vector has thousands of component, because it copies all the
+    # # content of the vector to make two tuple just to use the __eq__ of tuple
+    # def __eq__(self, other):
+    #     return tuple(self) == tuple(other)
+
     def __eq__(self, other):
-        return tuple(self) == tuple(other)
+        return len(self) == len(other) and all(a == b for a, b in zip(self, other))
+
+    def __hash__(self):
+        hashes = (hash(c) for c in self._component)
+        return functools.reduce(operator.xor, hashes, 0)  # give reduce an initializer in case the hashes is empty
 
     def __abs__(self):
         math.sqrt(sum(i * i for i in self))
@@ -99,7 +110,7 @@ class Vector:
 
 
 if __name__ == '__main__':
-    v1 = Vector([3, 4, 5])
+    v1 = Vector([3, 4, 5, 6, 7])
     print(len(v1))
     print(v1[-1])
     v2 = Vector(range(10))
@@ -111,9 +122,11 @@ if __name__ == '__main__':
 
     print(v2.y)
 
-    v2.y = 10
-    # print(v2.y)  # after customizing the __setattr__, this will raise a exception
+    # v2.y = 10  # after customizing the __setattr__, this will raise a exception
+    # print(v2.y)
     print(v2)
     # here is the problem, without a proper __setattr__, if you set the value of attribute x/y/z/t, then x will
     # become a attribute of the instance, and the value of instance.x will change from then on even thought the
     # value of the component of the vector has not changed, that is why we need __setattr__
+
+    print(hash(v1))
