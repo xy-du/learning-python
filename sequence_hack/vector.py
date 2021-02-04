@@ -6,6 +6,7 @@ import reprlib
 
 class Vector:
     typecode = 'd'
+    shortcut = 'xyzt'
 
     def __init__(self, component):
         self._component = array.array(self.typecode, component)
@@ -55,6 +56,41 @@ class Vector:
         else:
             raise TypeError(f'{cls.__name__} indices must be integers')
 
+    # we want access the first few components with shortcut letters such as x, y, z instead
+    # of v[0], v[1] and v[2].
+    # The __getattr__ method is invoked by the interpreter when attribute lookup fails.
+    # In simple terms, given the expression my_obj.x,
+    # Python checks if the my_obj instance has an attribute named x;
+    # if not, the search goes to the class (my_obj.__class__),
+    # and then up the inheritance graph.
+    # If the x attribute is not found,
+    # then the __getattr__ method defined in the class of my_obj is called with self and the name of the attribute
+    # as a string (e.g., 'x').
+
+    def __getattr__(self, item):
+        cls = type(self)
+        if len(item) == 1:
+            pos = cls.shortcut.find(item)
+            if 0 <= pos < len(cls.shortcut):
+                return self._component[pos]
+        raise AttributeError(f'{cls.__name__!r} has no attribute {item!r}')
+
+    # we don't want the attribute 'a' to 'z' to be set
+    # for what it's worth, do not use __slots__ to limit the attribute
+    def __setattr__(self, key, value):
+        cls = type(self)
+        if len(key) == 1:
+            if key in cls.shortcut:
+                error = 'readonly attribute {attr_name!r}'
+            elif key.islower():
+                error = "can not set attribute 'a' to 'z' in {cls_name!r}"
+            else:
+                error = ''
+            if error:
+                msg = error.format(attr_name=key, cls_name=cls)
+                raise AttributeError(msg)
+        super().__setattr__(key, value)
+
     @classmethod
     def frombytes(cls, octets):
         typecode = chr(octets[0])
@@ -67,7 +103,17 @@ if __name__ == '__main__':
     print(len(v1))
     print(v1[-1])
     v2 = Vector(range(10))
+
     # RUN on python console (so the __repr__ is used instead of __str__ used in print())
     # v2[1:5]  # return array('d', [1.0, 2.0, 3.0, 4.0]), but returning a Vector would be better
     # v2[1:5] # now, it returns Vector([1.0, 2.0, 3.0, 4.0]),
     # print(v2[1:2,4]) # this will cause error because we do not make slicing support multidimensional
+
+    print(v2.y)
+
+    v2.y = 10
+    # print(v2.y)  # after customizing the __setattr__, this will raise a exception
+    print(v2)
+    # here is the problem, without a proper __setattr__, if you set the value of attribute x/y/z/t, then x will
+    # become a attribute of the instance, and the value of instance.x will change from then on even thought the
+    # value of the component of the vector has not changed, that is why we need __setattr__
