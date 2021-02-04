@@ -38,8 +38,23 @@ class Vector:
     def __bool__(self):
         return bool(abs(self))
 
+    # to make slicing of Vector to return a Vector instance, just simply delegating to array is not working
+    def __len__(self):
+        return len(self._component)
+
+    def __getitem__(self, item):
+        return self._component[item]
+
     @classmethod
     def frombytes(cls, octets):
         typecode = chr(octets[0])
         mem = memoryview(octets[:-1]).cast(typecode)
         return cls(mem)  # no more unpacking here since __init__ accept iterable
+
+
+if __name__ == '__main__':
+    v1 = Vector([3, 4, 5])
+    print(len(v1))
+    print(v1[-1])
+    v2 = Vector(range(10))
+    print(v2[1:5])  # return array('d', [1.0, 2.0, 3.0, 4.0]), but returning a Vector would be better
