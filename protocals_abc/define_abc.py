@@ -14,7 +14,7 @@ class Tombola(abc.ABC):  # to define an ABC, inherit abc.ABC
     # but it can be implemented, and the subclass can use this implementation
     # by super() to add some functions instead of implementing from scratch
     @abc.abstractmethod
-    def load(self):
+    def load(self, iterable):
         """Add items from an iterable."""
 
     # self.pick() may raise LookupEr ror is also part of its interface,
