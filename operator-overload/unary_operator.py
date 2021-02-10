@@ -32,6 +32,12 @@
 
 # add __mul__ and __rmul__ to support *
 
+# rewrite __eq__
+#   1.The same set of methods are used in forward and reverse operator
+#   calls, like __eq__ and __ne__
+#   2.In the case of == and !=, if the reverse call fails, Python compares
+#   the object IDs instead of raising TypeError.
+
 
 import array
 import functools
@@ -65,8 +71,18 @@ class Vector:
     def __bytes__(self):
         return bytes([ord(self.typecode)]) + bytes(self._component)
 
+    # def __eq__(self, other):
+    #     return len(self) == len(other) and all(a == b for a, b in zip(self, other))
+
+    # rewrite __eq__ to deal with the tuple(1,2,3)==Vector(1,2,3) issue
+    # How about !=? We don’t need to implement it because the fallback behavior
+    # of the __ne__ inherited from object suits us: when __eq__ is defined and
+    # does not return NotImplemented, __ne__ returns that result negated.
     def __eq__(self, other):
-        return len(self) == len(other) and all(a == b for a, b in zip(self, other))
+        if isinstance(other, Vector):
+            return len(self) == len(other) and all(a == b for a, b in zip(self, other))
+        else:
+            return NotImplemented
 
     def __hash__(self):
         hashes = (hash(c) for c in self._component)
@@ -234,3 +250,6 @@ if __name__ == '__main__':
     from fractions import Fraction
 
     print(Fraction(1, 3) * v6)
+
+    # test == operator
+    print((1, 2, 3) == Vector([1, 2, 3]))
