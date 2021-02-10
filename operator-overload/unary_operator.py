@@ -4,11 +4,31 @@
 
 # I copy the Vector here for convenience
 
-# here I add __neg__ and __pos__ into the class so that it will support - and + operator
+# add __neg__ and __pos__ into the class so that it will support - and + operator
 
-# fundamental rule of operators:
+# fundamental rule of infix operators:
 # always return a new object. In other words, do not modify self,
 # but create and return a new instance of a suitable type.
+
+# add __add__ and __radd__ to support infix + operator overload
+# NOTE:
+# Special methods implementing unary or infix operators should never
+# change their operands. they are expected  to produce results by creating new objects.
+# Only augmented assignment operators may change the first operand(self)
+
+# How infix and the reversed operator work together
+#   1.If a has __add__, call a.__add__(b) and return result unless it’s NotImplemented.
+#   2. If a doesn’t have __add__, or calling it returns NotImplemented, check if b has
+#   __radd__, then call b.__radd__(a) and return result unless it’s NotImplemented.
+#   3. If b doesn’t have __radd__, or calling it returns NotImplemented, raise TypeError
+#   with an unsupported operand types message.
+
+# Note:
+# Do not confuse NotImplemented with NotImplementedError. The first, NotImplemented,
+# is a special singleton value that an infix operator special method should return
+# to tell the interpreter it cannot handle a given operand. In contrast, NotImplementedError
+# is an exception that stub methods in abstract classes raise to warn that they must
+# be overwritten by subclasses.
 
 import array
 import functools
@@ -57,6 +77,31 @@ class Vector:
 
     def __pos__(self):
         return Vector(self)
+
+    # def __add__(self, other):
+    #     pairs = itertools.zip_longest(self, other, fillvalue=0.0)
+    #     return Vector(x + y for x, y in pairs)
+
+    # base on the rule python use concerning infix operator
+    #   returning NotImplemented, you leave the door open for the implementer
+    # of the other operand type to perform the operation when Python tries
+    # the reversed method call.
+    #   And in the spirit of duck typing, we will refrain from testing the type of
+    #   the other operand, or the type of its elements. We’ll catch the exceptions
+    #   and return NotImplemented.
+    def __add__(self, other):
+        try:
+            pairs = itertools.zip_longest(self, other, fillvalue=0.0)
+            return Vector(x + y for x, y in pairs)
+        except TypeError:
+            return NotImplemented
+
+    # this is called 'reversed' or 'reflected' version of __add__
+    # Often, __radd__ can be as simple as that:
+    # just invoke the proper operator, therefore
+    # delegating to __add__ in this case
+    def __radd__(self, other):
+        return self + other
 
     def __bool__(self):
         return bool(abs(self))
@@ -132,3 +177,30 @@ if __name__ == '__main__':
     print(id(v2), v2)
     v3 = +v1
     print(id(v3), v3)
+
+    # test about + operator
+    v4 = v1 + v3
+    print(v4)
+    v5 = Vector([1, 2, 3, 4])
+    v6 = Vector([5, 6, 7])
+    print(v5 + v6)
+
+    l = [1, 2, 3]
+    # it works with different type
+    print(v6 + l)
+    # but if we switch the order, and with only __add__
+    # TypeError: can only concatenate list (not "Vector") to list
+    # that is why need __radd__
+    print(l + v6)
+
+    # without the 'try-except' version of __add__, the following two
+    # operator will show message that is not help or 'vector-native'
+    # TypeError: 'int' object is not iterable
+    # after implement the 'try-except' version of __add__, error msg change to
+    # TypeError: unsupported operand type(s) for +: 'Vector' and 'int'
+    # see the detail reason at the  comment at new version of __add__
+    print(v6 + 1)
+    # TypeError: unsupported operand type(s) for +: 'float' and 'str'
+    # after implement the 'try-except' version of __add__, error msg change to
+    # TypeError: unsupported operand type(s) for +: 'Vector' and 'str'
+    print(v6 + 'ABC')
