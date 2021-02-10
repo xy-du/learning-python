@@ -30,6 +30,9 @@
 # is an exception that stub methods in abstract classes raise to warn that they must
 # be overwritten by subclasses.
 
+# add __mul__ and __rmul__ to support *
+
+
 import array
 import functools
 import itertools
@@ -102,6 +105,22 @@ class Vector:
     # delegating to __add__ in this case
     def __radd__(self, other):
         return self + other
+
+    # we could use duck typing like what we do with __add__,
+    # no type check, just try catch the error
+    # but here we do it in a more explicit way that makes sense in this
+    # situation: goose typing.
+    # instead of hardcoding some concrete types, we check against the numbers.Real ABC,
+    # which covers all the types we need, and keeps our implementation open to future
+    # numeric types that declare themselves actual or virtual subclasses of the numbers.Real ABC.
+    def __mul__(self, scalar):
+        if isinstance(scalar, numbers.Real):
+            return Vector(scalar * v for v in self)
+        else:
+            return NotImplemented
+
+    def __rmul__(self, other):
+        return self * other
 
     def __bool__(self):
         return bool(abs(self))
@@ -199,8 +218,19 @@ if __name__ == '__main__':
     # after implement the 'try-except' version of __add__, error msg change to
     # TypeError: unsupported operand type(s) for +: 'Vector' and 'int'
     # see the detail reason at the  comment at new version of __add__
-    print(v6 + 1)
+    ############################ run in python console###################
+    # print(v6 + 1)
+
     # TypeError: unsupported operand type(s) for +: 'float' and 'str'
     # after implement the 'try-except' version of __add__, error msg change to
     # TypeError: unsupported operand type(s) for +: 'Vector' and 'str'
-    print(v6 + 'ABC')
+    ############################ run in python console###################
+    # print(v6 + 'ABC')
+
+    # test * operator
+    print(v6 * 2)
+    print(3 * v6)
+    print(True * v6)
+    from fractions import Fraction
+
+    print(Fraction(1, 3) * v6)
