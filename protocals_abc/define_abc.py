@@ -37,7 +37,7 @@ class Tombola(abc.ABC):  # to define an ABC, inherit abc.ABC
         items = []
         while True:
             try:
-                items.append(self.load())
+                items.append(self.pick())
             except LookupError:
                 break
         self.load(items)
