@@ -16,7 +16,7 @@ class BingoCage(Tombola):
     # raise the IndexError is what the ABC interface required
     def pick(self):
         try:
-            self._items.pop()
+            return self._items.pop()
         except IndexError:
             raise IndexError('pick for empty BingoCage')
 
