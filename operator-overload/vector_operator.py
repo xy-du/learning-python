@@ -253,3 +253,9 @@ if __name__ == '__main__':
 
     # test == operator
     print((1, 2, 3) == Vector([1, 2, 3]))
+
+    # if a class does not implement the in-place operators, the augmented assignment
+    # operator will just use the corresponding infix operator special method
+    # eg., a+=b will be evaluated using a=a+b
+    v6 += Vector([1, 2, 3])
+    print(v6)
