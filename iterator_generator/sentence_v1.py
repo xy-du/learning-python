@@ -59,6 +59,7 @@ if __name__ == '__main__':
     print(len(s))
     for word in s:  # the __getitem__ is why sentence can be iterable
         print(word)
+    print(list(s))
 
     print('iterable test in goose-typing approach')
     f = Foo()
