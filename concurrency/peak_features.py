@@ -40,6 +40,19 @@
 # submit()
 # schedules the callables and return the features of the pending callables
 
+# GIL(global interpreter lock)
+# allows only one thread at a time to execute python bytecode;
+# Cpython is not thread-safe internally so it has GIL;
+# When we write Python code, we have no control over the GIL, but a
+# built-in function or an extension written in C can release the GIL
+# while running time-consuming tasks;
+# However, all standard library functions that perform blocking I/O
+# release the GIL when waiting for a result from the OS. This means
+# Python programs that are I/O bound can benefit from using threads
+# at the Python level: while one Python thread is waiting for a response
+# from the network, the blocked I/O function releases the GIL so
+# another thread can run.
+
 from concurrent import futures
 
 from concurrency.concur_feature_download import download_one
