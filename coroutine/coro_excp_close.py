@@ -32,7 +32,7 @@ next(co)
 co.send(11)
 co.send(22)
 co.close()  # close() cause GeneratorExit error,it won't propagate to caller even it's not handled
-
+# co.send(33)  # no can do
 
 # co.send(33)
 
