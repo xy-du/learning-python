@@ -67,9 +67,9 @@ from concurrency.seq_download import main
 
 
 def download_many(img_list):
-    img_list = img_list[:5]
+    # img_list = img_list[:5]
     todo = []
-    with futures.ThreadPoolExecutor(max_workers=3) as executor:
+    with futures.ThreadPoolExecutor(max_workers=5) as executor:
         for img_name in sorted(img_list):
             future = executor.submit(download_one, img_name)
             todo.append(future)

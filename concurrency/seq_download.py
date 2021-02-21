@@ -4,21 +4,23 @@ import time
 
 import requests
 
-IMAGE_NAMES = ('y5OZxH y5OAPO y5OVRe y5OFIK y5Oia6 y5OEGD y5OmMd y5OnsA y5OMZt y5OuqI').split()  # <2>
 
-BASE_URL = 'https://imgchr.com/i/'
+
+IMAGE_NAMES = ('yotaUe yotd4H yotUED yotB8A yot0Cd yotrvt yotyKP yot6Df yotcb8 yot2VS').split()  # <2>
+
+BASE_URL = 'https://s3.ax1x.com/2021/02/21'
 
 DEST_DIR = 'downloads/'
 
 
 def save_img(img, filename):
-    path = os.path.join(DEST_DIR, filename)
+    path = os.path.join(DEST_DIR, filename+'.png')
     with open(path, 'wb') as fp:
         fp.write(img)
 
 
 def get_img(cc):
-    url = '{}/{cc}/{cc}.png'.format(BASE_URL, cc=cc.lower())
+    url = '{}/{}.png'.format(BASE_URL, cc)
     resp = requests.get(url)
     return resp.content
 
@@ -29,10 +31,10 @@ def show(text):
 
 
 def download_many(img_list):
-    for img in sorted(img_list):
-        image = get_img(img)
-        show(img)
-        save_img(image, img.lower())
+    for img_name in sorted(img_list):
+        image = get_img(img_name)
+        show(img_name)
+        save_img(image, img_name.lower())
 
     return len(img_list)
 
