@@ -55,7 +55,7 @@
 
 from concurrent import futures
 
-from concurrency.concur_feature_download import download_one
+from concurrency.threadpool_download import download_one
 from concurrency.seq_download import main
 
 
