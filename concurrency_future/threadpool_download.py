@@ -1,6 +1,6 @@
 from concurrent import futures
 
-from concurrency.seq_download import get_img, save_img, main, show
+from concurrency_future.seq_download import get_img, save_img, main, show
 
 MAX_WORKS = 20
 

@@ -55,8 +55,8 @@
 
 from concurrent import futures
 
-from concurrency.threadpool_download import download_one
-from concurrency.seq_download import main
+from concurrency_future.seq_download import main
+from concurrency_future.threadpool_download import download_one
 
 
 # def download_one(img_name):

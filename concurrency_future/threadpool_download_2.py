@@ -4,7 +4,7 @@ from concurrent import futures
 import requests
 import tqdm
 
-from concurrency.seq_download_2 import main, download_one, HTTPStatus
+from concurrency_future.seq_download_2 import main, download_one, HTTPStatus
 
 
 # NOTE:

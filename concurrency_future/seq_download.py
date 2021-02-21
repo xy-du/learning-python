@@ -4,8 +4,6 @@ import time
 
 import requests
 
-
-
 IMAGE_NAMES = ('yotaUe yotd4H yotUED yotB8A yot0Cd yotrvt yotyKP yot6Df yotcb8 yot2VS').split()  # <2>
 
 BASE_URL = 'https://s3.ax1x.com/2021/02/21'
@@ -14,7 +12,7 @@ DEST_DIR = 'downloads/'
 
 
 def save_img(img, filename):
-    path = os.path.join(DEST_DIR, filename+'.png')
+    path = os.path.join(DEST_DIR, filename + '.png')
     with open(path, 'wb') as fp:
         fp.write(img)
 
