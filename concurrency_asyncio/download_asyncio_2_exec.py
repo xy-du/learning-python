@@ -48,7 +48,9 @@ async def download_one(session, cc, base_url, semaphore, verbose):
     except Exception as exc:
         raise FetchError(cc) from exc
     else:
-        save_flag(image, cc.lower() + '.png')
+        loop = asyncio.get_event_loop()
+        loop.run_in_executor(None, save_flag, image, cc.lower() + '.png')
+        # save_flag(image, cc.lower() + '.png')
         status = HTTPStatus.ok
         msg = 'OK'
 
