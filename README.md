@@ -19,6 +19,10 @@ Heads-Up
   later on I develop on different branches but didn't merge them into the master for a while. After that, I merged all
   the branches into mater and begin the normal develop-and-merge process.
 
+* About the comments in this repo: the basic ideas in them arex from the book, but almost all of them is rephrased based
+  on my understanding, so there will be typo or grammar mistakes, even tech error. Therefore, if you find that something
+  is off, it would be better to do a cross-check.
+
 * Compare every commit with the one before it to see the increment made in current one is a good way to review. Say, you
   are using pycharm. Just open the Git tab and browse all the commits. When you click a commit, the changed file in that
   commit will show, click the file you will see the changes made in that file, which is the self-contained code snippet.
