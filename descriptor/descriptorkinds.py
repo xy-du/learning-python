@@ -124,3 +124,11 @@ if __name__ == '__main__':
     # by a descriptor with __get__ attached to the managed class,
     # the writing of a class attribute cannot be handled by a descriptor
     # with __set__ attached to the same class (that would require metaclass tech)
+
+    print('-------------methods are descriptor')
+    obj = Managed()
+    print(obj.spam)  # <bound method Managed.spam of <__main__.Managed object at 0x109c0bd00>>
+    print(Managed.spam)  # <function Managed.spam at 0x108e501f0>
+    obj.spam = 23
+    print(obj.spam)  # 23 shadows the class attribute, rendering the spam method inaccessible from the obj instance.
+    print(Managed.spam)
