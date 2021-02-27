@@ -109,3 +109,18 @@ if __name__ == '__main__':
     print(Managed.non_over)
     del obj.non_over
     print(obj.non_over)
+
+    print('----------override the descriptor in the class------------------')
+    obj = Managed
+    Managed.over = 1
+    Managed.over_no_get = 2
+    Managed.non_over = 3
+    print(obj.over, obj.over_no_get, obj.non_over)  # the descriptors are all gone
+    # Regardless of whether a descriptor is overriding or not,
+    # it can be overwritten by assignment to the class.
+    # This is a monkey-patching technique
+    # reveals another asymmetry regarding reading and writing attributes:
+    # although the reading of a class attribute can be controlled
+    # by a descriptor with __get__ attached to the managed class,
+    # the writing of a class attribute cannot be handled by a descriptor
+    # with __set__ attached to the same class (that would require metaclass tech)
