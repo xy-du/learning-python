@@ -1,6 +1,6 @@
 # run in two ways:
 # console: import evaltime
-# termianl: python evaltime.py
+# terminal: python evaltime.py
 #   to understance the difference between the
 # 'import time' and 'running time'
 # NOTE:
