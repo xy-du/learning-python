@@ -23,9 +23,9 @@ https://www.amazon.com/Fluent-Python-Concise-Effective-Programming/dp/1491946008
 Heads-Up
 --------------
 
-* At the beginning, it's some basic knowledge, so I did not use different branches and just develop on the master .
-  later on I develop on different branches but didn't merge them into the master for a while. After that, I merged all
-  the branches into mater and begin the normal develop-and-merge process.
+* At the beginning, it's some basic knowledge, so I did not use different branches and just develop on the master. later
+  on I develop on different branches but didn't merge them into the master for a while. After that, I merged all the
+  branches into mater and begin the normal develop-and-merge process.
 
 * About the comments in this repo: the basic ideas in them arex from the book, but almost all of them is rephrased based
   on my understanding, so there will be typo or grammar mistakes, even tech error. Therefore, if you find that something
