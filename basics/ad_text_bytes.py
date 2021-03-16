@@ -103,7 +103,7 @@ print('+++++++++++++++++++++++++++++++++++++')
 # if you run the flowing digest on windows, you will get different output since windows use different encoding under
 # different circumstances, which is painful. BUT, you can always ease lots of pains when you are explicit about the
 # encodings in you programs
-import sys, locale
+import sys
 
 expressions = """
         locale.getpreferredencoding()

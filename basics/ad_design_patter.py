@@ -1,5 +1,5 @@
-from collections import namedtuple
 from abc import ABC, abstractmethod
+from collections import namedtuple
 
 Customer = namedtuple('Customer', 'name fedility')
 

@@ -46,9 +46,6 @@ l4 = [fact(n) for n in range(6) if n % 2]
 # print(l3)
 # print(l4)
 
-from functools import reduce
-from operator import add
-
 # print(reduce(add, range(100)))
 # print(sum(range(100)))
 
@@ -269,7 +266,6 @@ def fact(n):
 # print(fact(5))
 
 # but if you use the mul function from operator module, well, see for yourself:
-from operator import mul
 
 
 def fact_op(n):
