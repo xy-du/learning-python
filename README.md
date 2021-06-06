@@ -7,7 +7,7 @@ This project is a record of my python (advanced parts) learning process. Each co
 are self-contained. Generally speaking, different branches represent different topics, and the commits contained therein
 have a certain continuity.
 
-Before read and learn flowing this book, I have already read and learned the
+Before read and learn following this book, I have already read and learned the
 book [Python Crash Course](https://www.amazon.com/Python-Crash-Course-Hands-Project-Based/dp/1593276036) and had most of
 the basic ideas about this language with practical experiences. So please Note that, even the basic topics here are not
 that 'basic', just like what's said in the book, "If you are just learning Python, this book is going to be hard to
